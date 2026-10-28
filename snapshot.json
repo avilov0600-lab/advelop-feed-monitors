@@ -139,6 +139,7 @@
     "tests/test_publication_control.py": "3528b6a0cbf4168829273cff0c4167a390984dae87d9b525de9f380f51e0646a",
     "tests/test_website_catalogues.py": "6a4a6daf3c60c0abb0cee1d8396ebe03d249fe51c485ab786013374136b1f44f",
     "verification/live-source-verification-20261028.json": "1c279c83fc3ff1410c1a07374fba5a7e52411b704a46472aebf469fb465d90ea",
+    "verification/new-clients-live-verification-20261028.json": "84cf91e8c8884e92092c5cd2009f119620f95104566e4baa1219c6302262f622",
     "website_catalogues.py": "f8812a8f671c604a92cafecdf29aef1ec6d4e6ecf45f40b20c7e8e4d62a9ad99"
   },
   "live_verified_at_moscow": "2026-10-28T13:53:39+03:00",
