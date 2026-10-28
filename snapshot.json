@@ -1,7 +1,7 @@
 {
   "snapshot_date_moscow": "2026-10-28",
-  "live_server_verified": false,
-  "live_verification_status": "pending: SSH unavailable; web console requires authenticated login",
+  "live_server_verified": true,
+  "live_verification_status": "verified: 51 installed files match; all 27 installed non-test Python files covered",
   "secrets_and_runtime_state_included": false,
   "original_github_revisions": {
     "masters": "e4de0b0d5923592a24079a0e4101eab4824b48e6",
@@ -14,7 +14,9 @@
     "developer-feed-monitor": "local multi-client implementation plus reconstructed October 19 adapter",
     "telegram-intake": "local sources of October 19 deployed intake replacement",
     "deployment/intake": "generated verbatim by saved October 19 deployment unit() function",
-    "shared_modules": "local floor_control.py, publication_control.py, website_catalogues.py from October audit"
+    "shared_modules": "local floor_control.py, publication_control.py, website_catalogues.py from October audit",
+    "advelop-telegram-relay": "live-verified common registry and historical import helper",
+    "server_diagnostics": "root and deploy variants retained separately and matched against live SHA-256"
   },
   "excluded": [
     "credential files",
@@ -27,7 +29,9 @@
   "files_sha256": {
     ".env.example": "2237dbb36dd06079d68d652d1e3cd71feae2fe452a39efda149a47869a7756da",
     ".gitignore": "419ea250ca549836d2f3edf7941f1074b2a933160954634da2b8693f323e1fae",
-    "README.md": "eafa0ecac4ca18974090d2a0054162d0cd02d34e531f991b3cc4770e4c9af20e",
+    "README.md": "480e5935a30d875ed0fe6af43830edd593107d3127c5a0573da3e8d7ec704aff",
+    "advelop-telegram-relay/import_yandex_state.py": "6bd81fd9f01498c04250923875121bfae34d3bd45813e5d72d5783339f83afd9",
+    "advelop-telegram-relay/relay.py": "b9da4e3d53684929f4439a4130addd50dff302d08f9e94648ae8156cf0b1a546",
     "audit_all_project_floors.py": "18595234fb6179e46c7d9d4def6eed223f509c3578907f123d3fee6fa46b5c9b",
     "check_monitor_sites.py": "621eb058974d48097315c791e026a2aafbb7053cdf2cedaea788e3a690648ef9",
     "dar-feed-monitor/.gitignore": "6a12520ed81fc2b12e23f859bb3d0dd3face03a73c8ca9ef618dd2d907c7f01a",
@@ -40,10 +44,11 @@
     "dar-feed-monitor/deploy/dar-telegram-poller.service": "89e324696e989551d194e95c4b0348d7bab5c5b104259940efbdc01edb663b09",
     "dar-feed-monitor/deploy/dar-telegram-relay.service": "3a35f43f22c3f57ec9d58636fc4bf81d32c4ea13063714738ca49995e472ba80",
     "dar-feed-monitor/deploy/enable_polling.py": "fe1e9674131fc162600b44afef8565491dd53f84b8cc5816122d35588b7400bc",
-    "dar-feed-monitor/deploy/inspect_market.py": "20d4d89eb0e872d81f2ef089a466702ec6b41c6425e1fc8145ed403378a38638",
+    "dar-feed-monitor/deploy/inspect_market.py": "62e1e844ce02b3424c9ec3aabd8d8b2d90d8f19486474e88e2d4aac75b59af8f",
     "dar-feed-monitor/deploy/install.py": "a6d1165942da4b3fd2ab5dad2e4d6247e4ab19e3a5fac645110cdc5ac30996ae",
     "dar-feed-monitor/deploy/poller.py": "2c1c102cd03e4665c820b5cede65201d079828cb0f933496f52e69bcc2102a6a",
     "dar-feed-monitor/deploy/relay.py": "f3b4d6e527974deb6236f1e1156316e72d963cd1237401a0a291ef00d612227c",
+    "dar-feed-monitor/inspect_market.py": "20d4d89eb0e872d81f2ef089a466702ec6b41c6425e1fc8145ed403378a38638",
     "dar-feed-monitor/monitor.py": "c9acc3cfafc9ffaa80ae72ee19f444dbcb54b2ab317cede2e6f19e7afcb80535",
     "dar-feed-monitor/tests/test_dar.py": "f111a48aabe9722daca2c921f1fa85dd03b0f0827986275823612debfc00010e",
     "deployment/intake/advelop-intake-asterus.service": "8cfbd4a260f2bd69f26da5d1e7cc0c82e02286430e6c843a30e9b8fd88e081b6",
@@ -55,6 +60,7 @@
     "deployment/intake/advelop-intake-rodina.service": "38b5ef82870c72cc1152b7ec59abf7a03981b204df3b21101689be5bebaef4c3",
     "deployment/intake/advelop-intake-summa.service": "7fc7c69093f88234dccd461ecbbc9ea76d7782fa0e04fdf20157a94c43f4a4d1",
     "developer-feed-monitor/README.md": "66d7277c5a1ee926d952b3849afe4acffb25326ebc589354e70cba1882bca55e",
+    "developer-feed-monitor/audit_cache.py": "b91a4302abff9737e034b3e4e56080033acadba994823821d82f4bb8b216495f",
     "developer-feed-monitor/clients.json": "7d3acc92cab003f6605a1c63e44777475729be5f14dddec695d7150dddccf9e7",
     "developer-feed-monitor/config.py": "3dde4f46f6b118edccf9d000281f0f17e6be90e908e15feb4529a3790560af38",
     "developer-feed-monitor/deploy/audit_cache.py": "b91a4302abff9737e034b3e4e56080033acadba994823821d82f4bb8b216495f",
@@ -117,8 +123,9 @@
     "masters-feed-monitor/yandex_cloud/index.py": "bed411b7808dcbcd09fdcd189edf173c169d78cbd34dd6014e3da0a556c71189",
     "publication_control.py": "bef8dcc514874086717ee60abb71855103fbee710211ae8242f362a7702c48dd",
     "scripts/check_snapshot.py": "aad8f6b453b6519d9d0d1177fd8d225650e2ab3946300da26bf29c463aa517e0",
-    "scripts/refresh_manifest.py": "2a91f1c9abef867917aa25dff8d325da4eae473e9c34205f6a948e62e15f4455",
+    "scripts/refresh_manifest.py": "f8cf92816aadeed6411570bfae69cee1e52dbc31f53dc05893123706217624e1",
     "scripts/run_tests.py": "ba6de0c4a8771b865a024b341b150c4db40abd7b770d536bba66be1768e60862",
+    "scripts/verify_live_sources.py": "40d2cdd1ed51bab0b02e9e7170f104edfe112446dd8ab056592fcef69975a091",
     "telegram-intake/deploy/deploy.py": "377e310f7b539c8044e11a2ca28ba99f1bef684a96a018137097231fbee701ac",
     "telegram-intake/deploy/shared_relay.py": "b9da4e3d53684929f4439a4130addd50dff302d08f9e94648ae8156cf0b1a546",
     "telegram-intake/deploy/verify_transport.py": "e7e4959ee9c1330ddf6c6011a33bb096bddea32e041ada2deb241309dcbd2e4b",
@@ -128,6 +135,9 @@
     "tests/test_floor_control.py": "0803b71e475de545524cf4d41962647e63a5676afeec12c69ec8d15dc53f7fa5",
     "tests/test_publication_control.py": "3528b6a0cbf4168829273cff0c4167a390984dae87d9b525de9f380f51e0646a",
     "tests/test_website_catalogues.py": "6a4a6daf3c60c0abb0cee1d8396ebe03d249fe51c485ab786013374136b1f44f",
+    "verification/live-source-verification-20261028.json": "1c279c83fc3ff1410c1a07374fba5a7e52411b704a46472aebf469fb465d90ea",
     "website_catalogues.py": "f8812a8f671c604a92cafecdf29aef1ec6d4e6ecf45f40b20c7e8e4d62a9ad99"
-  }
+  },
+  "live_verified_at_moscow": "2026-10-28T13:53:39+03:00",
+  "live_verification_evidence": "verification/live-source-verification-20261028.json"
 }

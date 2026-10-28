@@ -4,7 +4,6 @@ import collections
 import json
 import os
 import sys
-import time
 import urllib.parse
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -16,13 +15,9 @@ auth=monitor._request_json(monitor.AVITO_API_BASE+'/token',data={
 parser=argparse.ArgumentParser()
 parser.add_argument('--per-page',type=int,default=100)
 parser.add_argument('--pages',type=int,default=3)
-parser.add_argument('--start-page',type=int,default=1)
-parser.add_argument('--delay',type=float,default=0)
 args=parser.parse_args()
 seen=set()
-for page in range(args.start_page,args.start_page+args.pages):
-    if page > args.start_page and args.delay:
-        time.sleep(args.delay)
+for page in range(1,args.pages+1):
     query=urllib.parse.urlencode({'status':'active','page':page,'per_page':args.per_page})
     result=monitor._request_json(monitor.AVITO_API_BASE+'/core/v1/items?'+query,token=auth['access_token'])
     rows=result.get('resources') or result.get('items') or []

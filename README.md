@@ -4,22 +4,32 @@ Private source-code repository for eight real-estate feed monitoring bots.
 
 ## Snapshot status — 28 October 2026
 
-This repository preserves the available sources, **not a verified disk snapshot
-of the live VPS**. SSH to Timeweb was unavailable during import. The web console
-reached a login prompt; live verification is pending authentication.
+The source snapshot was verified against the live VPS through its authenticated
+Timeweb COM console at **2026-10-28 13:53:39 MSK**, using read-only SHA-256 checks.
+All **51 installed files** in the verification scope match. The inventory covered
+all **27 non-test Python files** in the five known application directories, with
+no unmapped Python files. Credentials and subscriber databases were not read.
+The server, services and schedules were not modified.
+
+This is a verified **source snapshot**, not a full disk/runtime-state backup.
+Three historical bootstrap files are retained locally but are not deployed on
+the VPS. Per-file hashes, path mappings and scope are in
+`verification/live-source-verification-20261028.json`.
 
 - MASTERS: current `main` downloaded from its existing GitHub repository.
 - IKON: current GitHub `main`, supplemented by the later local VPS adapter.
 - DAR and developer clients: local implementation sources.
 - Telegram intake: sources of the shared fix deployed on 19 October 2026.
-- Shared comparison modules: local versions from the completed October audit.
+- Shared comparison modules: October audit versions, now verified on the live VPS.
+- Shared relay and diagnostic helpers: live path layout and byte-identical sources.
 
 The Telegram network adapter changes from 19 October are reproduced from the
 saved deployment script. Their provenance is recorded in `snapshot.json`.
 Historical test mocks/wording were updated to the shared transport and the
 already-approved source → website → XML → publication report format; runtime
 business rules were not changed as part of this backup.
-Do not describe this import as live-server-verified until hashes are compared.
+The diagnostic script under `dar-feed-monitor/deploy/` was reconciled to the live
+version; the different root-level diagnostic script is preserved separately.
 The original repositories and production services are not changed by this import.
 
 ## Components
@@ -31,10 +41,12 @@ The original repositories and production services are not changed by this import
 | `dar-feed-monitor/` | DAR: Dom na Chasovoy, Rakurs | `/opt/dar-feed-monitor` |
 | `developer-feed-monitor/` | Asterus, Rodina, Plato, Aston, DomDau | `/opt/developer-feed-monitor` |
 | `telegram-intake/` | `/start`, subscriptions, durable replies for all eight bots | `/opt/advelop-command-intake` |
+| `advelop-telegram-relay/` | Common MASTERS/IKON registry and historical state-import helper | `/opt/advelop-telegram-relay` |
 | root Python modules | Publication checks, website catalogues and floor normalization | `/opt/*.py` |
 
-`telegram-intake/deploy/shared_relay.py` is the saved common registry service for
-MASTERS and IKON, deployed as `/opt/advelop-telegram-relay/relay.py`.
+`advelop-telegram-relay/relay.py` is the deployed common registry service for
+MASTERS and IKON. Its byte-identical deployment template is preserved as
+`telegram-intake/deploy/shared_relay.py`.
 The deploy script in that directory records the service definitions for all tenants.
 
 ## Product rules
@@ -86,10 +98,15 @@ Some historical scripts predate the 19 October intake replacement and contain
 obsolete IPv6-only/legacy poller settings. The canonical replacement is
 `telegram-intake/`; never start a legacy poller beside the new consumer.
 
-Before the next production deployment, authenticate to Timeweb, compare the
-allowlisted source files with this snapshot, import any drift, and update the
-live-verification status. Never collect `/etc` secrets or `/var/lib` databases
-as part of that source comparison.
+Before the next production deployment, compare the allowlisted source files
+again and import any drift. With the repository available on the VPS, a read-only
+repeat check is:
+
+```sh
+python3 scripts/verify_live_sources.py verification/live-source-verification-20261028.json
+```
+
+Never collect `/etc` secrets or `/var/lib` databases as part of that source check.
 
 ## Original repositories
 

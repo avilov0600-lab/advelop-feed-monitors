@@ -1,0 +1,337 @@
+{
+  "verified_at_moscow": "2026-10-28T13:53:39+03:00",
+  "method": "authenticated Timeweb COM console; read-only Python hashlib.sha256 comparisons",
+  "server_modified": false,
+  "secrets_or_subscriber_databases_read": false,
+  "candidates": 54,
+  "installed_files": 51,
+  "matching_files": 51,
+  "installed_python_files_outside_tests": 27,
+  "unmapped_installed_python_files": 0,
+  "scope": "Five known /opt application directories (non-test Python); explicitly mapped configs, shared helpers, systemd services and timers. No credentials, databases, dumps, or logs.",
+  "files": [
+    {
+      "server_path": "/opt/dar-feed-monitor/monitor.py",
+      "repository_path": "dar-feed-monitor/monitor.py",
+      "sha256": "c9acc3cfafc9ffaa80ae72ee19f444dbcb54b2ab317cede2e6f19e7afcb80535",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/config.py",
+      "repository_path": "dar-feed-monitor/config.py",
+      "sha256": "8ddd4b6cb95048dafa499df071012e515b9548b0107df5ca906059564b672cdb",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/monitor.py",
+      "repository_path": "developer-feed-monitor/monitor.py",
+      "sha256": "db22355bcb7718a91944dbd2d2c1c630398c8807aafec964edd4783d2eb92b1c",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/config.py",
+      "repository_path": "developer-feed-monitor/config.py",
+      "sha256": "3dde4f46f6b118edccf9d000281f0f17e6be90e908e15feb4529a3790560af38",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/monitor.py",
+      "repository_path": "ikon-feed-monitor/monitor.py",
+      "sha256": "2de5224619e9576c6ff45fbe1c69724af085b263f46d2fdcecab201155a1357b",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/config.py",
+      "repository_path": "ikon-feed-monitor/config.py",
+      "sha256": "9fb0677a45629e990491265860ad02f018a98d9eb212ec82e65add103525f79e",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/clients.json",
+      "repository_path": "developer-feed-monitor/clients.json",
+      "sha256": "7d3acc92cab003f6605a1c63e44777475729be5f14dddec695d7150dddccf9e7",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/run.py",
+      "repository_path": "developer-feed-monitor/run.py",
+      "sha256": "3f46306bf8654cf9c402a86a095702f610bf604549a4e8d671be4a698d673ac4",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/floor_control.py",
+      "repository_path": "floor_control.py",
+      "sha256": "1d7985c92a1e8ffbcc2072a1b5aeeafa1bea7de5a8e62289635d5f429a1b7bf9",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/publication_control.py",
+      "repository_path": "publication_control.py",
+      "sha256": "bef8dcc514874086717ee60abb71855103fbee710211ae8242f362a7702c48dd",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/website_catalogues.py",
+      "repository_path": "website_catalogues.py",
+      "sha256": "f8812a8f671c604a92cafecdf29aef1ec6d4e6ecf45f40b20c7e8e4d62a9ad99",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/advelop-command-intake/intake.py",
+      "repository_path": "telegram-intake/intake.py",
+      "sha256": "17479b16b059c5892509cfc383af206e4b2553dc88ac42eca061fd2111c4e59d",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/advelop-command-intake/transport.py",
+      "repository_path": "telegram-intake/transport.py",
+      "sha256": "77e0fdd982f3d0a8da1dd6d0c6ec1f1216a384e6b155ec594dcf06829059a90c",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/relay.py",
+      "repository_path": "dar-feed-monitor/deploy/relay.py",
+      "sha256": "f3b4d6e527974deb6236f1e1156316e72d963cd1237401a0a291ef00d612227c",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/relay.py",
+      "repository_path": "developer-feed-monitor/deploy/relay.py",
+      "sha256": "68b0313accd1f84642a2c44fa5a71610fe4e156bcfd764db916b21def54badf2",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/advelop-telegram-relay/relay.py",
+      "repository_path": "advelop-telegram-relay/relay.py",
+      "sha256": "b9da4e3d53684929f4439a4130addd50dff302d08f9e94648ae8156cf0b1a546",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-dar.service",
+      "repository_path": "deployment/intake/advelop-intake-dar.service",
+      "sha256": "c1267b3ce811116beb17b10c4ebb0a96c8ed0e5d49d15d76886b439a43a6b9d4",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-ikon.service",
+      "repository_path": "deployment/intake/advelop-intake-ikon.service",
+      "sha256": "df166b9093311e6897811f5b1b3a3bef0195b1bb79904be59349013a9f4d02d9",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-masters.service",
+      "repository_path": "deployment/intake/advelop-intake-masters.service",
+      "sha256": "10f482aed7b70d0810d51438a82d08ab8f4344edd19d948d8414196324bf7bdc",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-asterus.service",
+      "repository_path": "deployment/intake/advelop-intake-asterus.service",
+      "sha256": "8cfbd4a260f2bd69f26da5d1e7cc0c82e02286430e6c843a30e9b8fd88e081b6",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-aston.service",
+      "repository_path": "deployment/intake/advelop-intake-aston.service",
+      "sha256": "0c34c4d21f77adb922d88ef0ccd832575d1213d25bfda9383beaab2216b786bd",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-rodina.service",
+      "repository_path": "deployment/intake/advelop-intake-rodina.service",
+      "sha256": "38b5ef82870c72cc1152b7ec59abf7a03981b204df3b21101689be5bebaef4c3",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-plato.service",
+      "repository_path": "deployment/intake/advelop-intake-plato.service",
+      "sha256": "f0dda704cf81243d39aa21dcc31962bc24578f474593261b215dbb3fb6f93677",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-intake-summa.service",
+      "repository_path": "deployment/intake/advelop-intake-summa.service",
+      "sha256": "7fc7c69093f88234dccd461ecbbc9ea76d7782fa0e04fdf20157a94c43f4a4d1",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/configure_bot.py",
+      "repository_path": "dar-feed-monitor/deploy/configure_bot.py",
+      "sha256": "54b9f57688c12c9017ce99040f9b56b9ac0d997d5313cb0321a566133bbd7d1c",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/enable_polling.py",
+      "repository_path": "dar-feed-monitor/deploy/enable_polling.py",
+      "sha256": "fe1e9674131fc162600b44afef8565491dd53f84b8cc5816122d35588b7400bc",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/inspect_market.py",
+      "repository_path": "dar-feed-monitor/deploy/inspect_market.py",
+      "sha256": "62e1e844ce02b3424c9ec3aabd8d8b2d90d8f19486474e88e2d4aac75b59af8f",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/poller.py",
+      "repository_path": "dar-feed-monitor/deploy/poller.py",
+      "sha256": "2c1c102cd03e4665c820b5cede65201d079828cb0f933496f52e69bcc2102a6a",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/audit_cache.py",
+      "repository_path": "developer-feed-monitor/deploy/audit_cache.py",
+      "sha256": "b91a4302abff9737e034b3e4e56080033acadba994823821d82f4bb8b216495f",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/configure_bot.py",
+      "repository_path": "developer-feed-monitor/deploy/configure_bot.py",
+      "sha256": "bf25197cd4244b7ff2943c13619299fafddfef10273fec5a12941a5b0d678baf",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/poller.py",
+      "repository_path": "developer-feed-monitor/deploy/poller.py",
+      "sha256": "b94a1d824822afec36f751d82d8d38e64035b2c1f5d851ebb380d1b4c6d6522a",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/provision.py",
+      "repository_path": "developer-feed-monitor/deploy/provision.py",
+      "sha256": "f6aaf2ae915d994120472a7cfc44fe9ba3d96179efe5560eb32f585687c818a3",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/resend_latest.py",
+      "repository_path": "developer-feed-monitor/deploy/resend_latest.py",
+      "sha256": "204c8e70273e47dc6097b4eb1fe29624e4b048a9f8ffadec8da6b7c54d92766f",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/deploy/status.py",
+      "repository_path": "developer-feed-monitor/deploy/status.py",
+      "sha256": "64e02563077abb3c34db1ab0dc459c7227df98c1a93f90abfac97c1f6befcc29",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/deploy/configure_local_relay.py",
+      "repository_path": "ikon-feed-monitor/deploy/configure_local_relay.py",
+      "sha256": "166567e5c2dd694102dd0c573a123f5cc02600d256faba95daa3d5eff6079c15",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/deploy/verify.py",
+      "repository_path": "ikon-feed-monitor/deploy/verify.py",
+      "sha256": "3648b4991e50fa090b369a14330eb236a7faf561b821a639d5860e8f59228ddc",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/dar-feed-monitor.service",
+      "repository_path": "dar-feed-monitor/deploy/dar-feed-monitor.service",
+      "sha256": "9b50ec3dffaa0410018e5d7bf9bc7b9118596b4bbee7ea235b807458504bb9d0",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/dar-feed-monitor.timer",
+      "repository_path": "dar-feed-monitor/deploy/dar-feed-monitor.timer",
+      "sha256": "42d4e072bdb76fe88560e15d83d975d5b375f14c3b483e298fae5c4b172be961",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/dar-telegram-relay.service",
+      "repository_path": "dar-feed-monitor/deploy/dar-telegram-relay.service",
+      "sha256": "3a35f43f22c3f57ec9d58636fc4bf81d32c4ea13063714738ca49995e472ba80",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/dar-telegram-poller.service",
+      "repository_path": "dar-feed-monitor/deploy/dar-telegram-poller.service",
+      "sha256": "89e324696e989551d194e95c4b0348d7bab5c5b104259940efbdc01edb663b09",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/ikon-feed-monitor.service",
+      "repository_path": "ikon-feed-monitor/deploy/ikon-feed-monitor.service",
+      "sha256": "a386177edb36f046ba0f8b0af86b82a7d50075d6f551e89ca9ce6c2e79dc45ad",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/ikon-feed-monitor.timer",
+      "repository_path": "ikon-feed-monitor/deploy/ikon-feed-monitor.timer",
+      "sha256": "ca6c26fcda47c69208ed826fa92f5a28e0e077a4df462e16d132b642f25e789b",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/developer-feed-monitor@.service",
+      "repository_path": "developer-feed-monitor/deploy/developer-feed-monitor@.service",
+      "sha256": "73850f7408843eba67e2531a478b916c2eeeef28c133b7809883a3d5c0a2ad5d",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/developer-feed-monitor@.timer",
+      "repository_path": "developer-feed-monitor/deploy/developer-feed-monitor@.timer",
+      "sha256": "19f47d5c4467ee4b5a9d872962e6b7fd3104ff59a95095293bdd2cb36ef2e5f0",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/developer-telegram-poller@.service",
+      "repository_path": "developer-feed-monitor/deploy/developer-telegram-poller@.service",
+      "sha256": "a46ba3f9a7af40f8207240565b7ba780742ba7c452e3c4859cdc78bb8fda72b0",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/etc/systemd/system/advelop-telegram-relay.service",
+      "repository_path": "masters-feed-monitor/timeweb_relay/advelop-telegram-relay.service",
+      "sha256": "051c643d249e94bd2aa87bbad4949c543aeddff6631047b77c1f6d0fdaa4e7a5",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/audit_all_project_floors.py",
+      "repository_path": "audit_all_project_floors.py",
+      "sha256": "18595234fb6179e46c7d9d4def6eed223f509c3578907f123d3fee6fa46b5c9b",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/check_monitor_sites.py",
+      "repository_path": "check_monitor_sites.py",
+      "sha256": "621eb058974d48097315c791e026a2aafbb7053cdf2cedaea788e3a690648ef9",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/advelop-telegram-relay/import_yandex_state.py",
+      "repository_path": "advelop-telegram-relay/import_yandex_state.py",
+      "sha256": "6bd81fd9f01498c04250923875121bfae34d3bd45813e5d72d5783339f83afd9",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/dar-feed-monitor/inspect_market.py",
+      "repository_path": "dar-feed-monitor/inspect_market.py",
+      "sha256": "20d4d89eb0e872d81f2ef089a466702ec6b41c6425e1fc8145ed403378a38638",
+      "status": "MATCH"
+    },
+    {
+      "server_path": "/opt/developer-feed-monitor/audit_cache.py",
+      "repository_path": "developer-feed-monitor/audit_cache.py",
+      "sha256": "b91a4302abff9737e034b3e4e56080033acadba994823821d82f4bb8b216495f",
+      "status": "MATCH"
+    }
+  ],
+  "local_only_bootstrap_files": [
+    {
+      "server_path": "/opt/dar-feed-monitor/deploy/install.py",
+      "repository_path": "dar-feed-monitor/deploy/install.py",
+      "status": "NOT_DEPLOYED"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/deploy/install.py",
+      "repository_path": "ikon-feed-monitor/deploy/install.py",
+      "status": "NOT_DEPLOYED"
+    },
+    {
+      "server_path": "/opt/ikon-feed-monitor/schedule_policy.py",
+      "repository_path": "ikon-feed-monitor/schedule_policy.py",
+      "status": "NOT_DEPLOYED"
+    }
+  ]
+}

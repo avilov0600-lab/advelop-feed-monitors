@@ -64,6 +64,19 @@ def main():
             },
             'excluded': ['credential files', 'subscriber databases and chat identifiers', 'generated reports', 'feed dumps', 'private keys', 'runtime caches']
         }
+    evidence_path = ROOT / 'verification/live-source-verification-20261028.json'
+    if evidence_path.is_file():
+        evidence = json.loads(evidence_path.read_text())
+        current_matches = all((ROOT / row['repository_path']).is_file() and
+            hashlib.sha256((ROOT / row['repository_path']).read_bytes()).hexdigest() == row['sha256']
+            for row in evidence['files'])
+        manifest['live_server_verified'] = current_matches and evidence['unmapped_installed_python_files'] == 0
+        manifest['live_verification_status'] = ('verified: 51 installed files match; all 27 installed non-test Python files covered'
+            if manifest['live_server_verified'] else 'source drift since live verification; repeat comparison required')
+        manifest['live_verified_at_moscow'] = evidence['verified_at_moscow']
+        manifest['live_verification_evidence'] = evidence_path.relative_to(ROOT).as_posix()
+        manifest['provenance']['advelop-telegram-relay'] = 'live-verified common registry and historical import helper'
+        manifest['provenance']['server_diagnostics'] = 'root and deploy variants retained separately and matched against live SHA-256'
     manifest['files_sha256'] = {}
     for candidate in sorted(ROOT.rglob('*')):
         if not candidate.is_file() or candidate == path:
