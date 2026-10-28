@@ -48,7 +48,7 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(report['site_vs_master']['status'],SOURCE_UNAVAILABLE)
         self.assertIsNone(report['site']['lot_count'])
         self.assertEqual(report['feeds']['cian']['lot_count'],1)
-        self.assertIn('сайт сейчас не проверен',format_telegram(report))
+        self.assertIn('Число квартир сайта не подтверждено',format_telegram(report))
 
     def test_site_shape_and_pagination_are_validated(self):
         import monitor as module

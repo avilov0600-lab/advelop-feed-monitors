@@ -1,0 +1,210 @@
+{
+  "verified_at_moscow": "2026-10-28T17:44:03+03:00",
+  "method": "Authenticated Timeweb COM console; exact file hashes plus saved-report fingerprints and systemd journals",
+  "scope": "Website availability only; no schedules, credentials, subscriber state or intake changes",
+  "installed_sources": [
+    {
+      "path": "/opt/site_availability.py",
+      "sha256": "a15ab41f2f7ee5b8c937c80553455a3738cb2b628de2252d7fbdb1d5009cfafa",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/site_availability_integration.py",
+      "sha256": "0aeba5606d1f6e10852aea48a579c7be645fa1bdf5bad476094c48e8312e71b3",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/site_availability.py",
+      "sha256": "a15ab41f2f7ee5b8c937c80553455a3738cb2b628de2252d7fbdb1d5009cfafa",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/site_availability_integration.py",
+      "sha256": "0aeba5606d1f6e10852aea48a579c7be645fa1bdf5bad476094c48e8312e71b3",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/dar-feed-monitor/monitor.py",
+      "sha256": "1469bd8b72e749a88f5cd21c3943ba1ecad8108830006b8a551175cc9288e16c",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/ikon-feed-monitor/monitor.py",
+      "sha256": "bde9ee4d06c6a3afb86eb43c62a41abc0e0305b645ac7916c96032340b9b247a",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/developer-feed-monitor/monitor.py",
+      "sha256": "07258f1564ca27bf2869079d332886ad37790e7d4a19a5b27521fcdb709ec85d",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/publication_control.py",
+      "sha256": "8ee608e0386f66bfad5fda4143f537432f8e9d10defc2cb5612459f8ac3d1f3a",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/publication_control.py",
+      "sha256": "5112b3b720174146d08eafe5083deb6d21db190ef07b454e3ac31ea4f26f41ef",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/monitor.py",
+      "sha256": "101b9a068f1e0fddbefff862fb86f8447613fcf10bc80fbbfaa062ad137e8aec",
+      "matches_live": true
+    }
+  ],
+  "intakes_active": 13,
+  "vps_reports": [
+    {
+      "tenant": "dar",
+      "delivery": {
+        "subscribers": 7,
+        "delivered": 7,
+        "failed": 0
+      },
+      "site_observations": 2,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": null
+    },
+    {
+      "tenant": "ikon",
+      "delivery": {
+        "subscribers": 2,
+        "delivered": 2,
+        "failed": 0
+      },
+      "site_observations": 2,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "asterus",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 1,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "rodina",
+      "delivery": {
+        "subscribers": 2,
+        "delivered": 2,
+        "failed": 0
+      },
+      "site_observations": 2,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "plato",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 1,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "aston",
+      "delivery": {
+        "subscribers": 3,
+        "delivered": 3,
+        "failed": 0
+      },
+      "site_observations": 4,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "summa",
+      "delivery": {
+        "subscribers": 3,
+        "delivered": 3,
+        "failed": 0
+      },
+      "site_observations": 1,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "donstroy",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 3,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "kortros",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 2,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "afi",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 3,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "apsis",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 1,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    },
+    {
+      "tenant": "sovcombank",
+      "delivery": {
+        "subscribers": 1,
+        "delivered": 1,
+        "failed": 0
+      },
+      "site_observations": 0,
+      "all_configured_sites_http_200": true,
+      "feed_inventory_unchanged": true
+    }
+  ],
+  "inventory_verification_note": "Fingerprint of every saved feed field excluding site_availability was unchanged for the eleven batch clients. DAR was the earlier canary and had no pre-refresh fingerprint; its rendering was verified in Telegram.",
+  "masters": {
+    "repository": "avilov0600-lab/masters-feed-monitor",
+    "revision": "e458b86382b1a111ea4fe3c076540bc19fb9d155",
+    "pull_request": 2,
+    "workflow_run": 40708238110,
+    "site_http_status": 200,
+    "website_lot_count": 196,
+    "subscribers": 6,
+    "delivered": 5,
+    "failed": 1,
+    "failure_diagnosis": "One recipient blocked the bot; verified via sendChatAction without resending messages or changing subscriptions"
+  },
+  "tests": {
+    "monorepo": 241,
+    "standalone_masters": 70
+  },
+  "evidence_note": "Source and aggregate delivery results observed on the console; Telegram DAR report checked visually. No tokens, chat identifiers or runtime reports included."
+}

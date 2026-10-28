@@ -20,6 +20,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
+from site_availability_integration import availability_status_line
 from floor_control import height_profile, height_lines, non_height_counts, cross_height_profile, cross_height_lines, invalid_floor_count
 
 MOSCOW = ZoneInfo('Europe/Moscow')
@@ -363,6 +364,8 @@ def install(m, client_name):
                 lines.extend(e(line) for line in m._marketing_lines(project))
                 site = project.get('website',{})
                 if not compact: lines.extend(['','<i>Сайт (справочно, не эталон)</i>'])
+                if site.get('status') != 'not_applicable':
+                    lines.append(e(availability_status_line(report, project_key, compact=compact)))
                 if site.get('lot_count') is not None:
                     value = site['lot_count']
                     lines.append(f'Сайт (справочно): {value} квартир')
@@ -378,7 +381,7 @@ def install(m, client_name):
                     if site.get('status') == 'not_applicable':
                         lines.append('ℹ️ Сайта у проекта нет; проверка сайта не применяется')
                     elif site.get('status') == m.SOURCE_UNAVAILABLE:
-                        lines.append(e('⚪ Сайт недоступен: '+site.get('reason','сетевая ошибка')+'; число квартир не проверено'))
+                        lines.append(e('⚪ Число квартир сайта не подтверждено: '+site.get('reason','каталог не удалось прочитать')))
                     else:
                         lines.append('⚪ Независимый счётчик квартир сайта не подтверждён')
                 public = category.get('platform_cards',{}).get(project_key,{})

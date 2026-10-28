@@ -39,6 +39,9 @@ SITE_API_URL = (
     "&project=masters&type=flats&with_pagination=true"
 )
 
+# Approved public catalogue from the client brief; never probe the inventory API.
+SITE_PUBLIC_URL = "https://cg-projects.ru/flats?project=masters&completion=2029-4"
+
 MASTER_FEED_URL = (
     "https://pics.capitalgroup.ru/pic/%D0%91%D0%BE%D0%B9/"
     "%D0%A0%D0%9A_%D0%A1%D0%B0%D0%B9%D1%82_"
@@ -1659,8 +1662,10 @@ def format_telegram(report: dict[str, Any]) -> str:
 
     lines.extend(height_lines(master_source_results, FEED_LABELS))
     lines.extend(["", "Сайт (справочно, не эталон):"])
+    from site_availability_integration import availability_status_line
+    lines.append(availability_status_line(report, 'masters'))
     if site_comparison.get("status") == SOURCE_UNAVAILABLE:
-        lines.append("⚪ SOURCE_UNAVAILABLE — сайт сейчас не проверен")
+        lines.append("⚪ Число квартир сайта не подтверждено: каталог не удалось прочитать")
     else:
         lines.append(
             f"Квартир на сайте Capital Group: {site_comparison['site_count']}"
@@ -2044,6 +2049,8 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Sync an existing JSON report to /start storage without sending it",
     )
+    parser.add_argument('--refresh-site-availability', action='store_true',
+                        help='Refresh only public website status in an existing --output report')
     return parser
 
 
@@ -2055,9 +2062,16 @@ def main(argv: list[str] | None = None) -> int:
         sync_latest_telegram_message(message, report.get("checked_at"))
         print("Telegram /start: последнее сообщение синхронизировано без рассылки")
         return 0
-    if not args.offline:
-        download_sources(args.cache_dir)
-    report = analyze_directory(args.cache_dir)
+    if args.refresh_site_availability:
+        from site_availability_integration import read_existing_report
+        report = read_existing_report(args.output)
+    else:
+        if not args.offline:
+            download_sources(args.cache_dir)
+        report = analyze_directory(args.cache_dir)
+    from site_availability_integration import check_report_sites
+    check_report_sites(report, 'Capital Group', {'masters': 'МАСТЕРС'},
+                       {'masters': SITE_PUBLIC_URL}, offline=args.offline)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(

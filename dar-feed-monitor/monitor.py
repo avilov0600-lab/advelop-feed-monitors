@@ -1709,14 +1709,22 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--force-notify", action="store_true")
     parser.add_argument("--state-file", type=Path, default=Path(".state.json"))
     parser.add_argument("--notify-after", type=int, default=2)
+    parser.add_argument('--refresh-site-availability', action='store_true',
+                        help='Refresh only public website status in an existing --output report')
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    if not args.offline:
-        download_sources(args.cache_dir)
-    report = analyze_directory(args.cache_dir)
+    if args.refresh_site_availability:
+        from site_availability_integration import read_existing_report
+        report = read_existing_report(args.output)
+    else:
+        if not args.offline:
+            download_sources(args.cache_dir)
+        report = analyze_directory(args.cache_dir)
+    from site_availability_integration import check_report_sites
+    check_report_sites(report, 'DAR', PROJECTS, WEBSITES, offline=args.offline)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(
