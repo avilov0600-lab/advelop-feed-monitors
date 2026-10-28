@@ -1,0 +1,35 @@
+[Unit]
+Description=ADVelop dar durable Telegram intake
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dar-relay
+Group=dar-relay
+WorkingDirectory=/var/lib/dar-telegram-relay
+EnvironmentFile=/etc/dar-telegram-relay.env
+EnvironmentFile=/etc/dar-telegram-poller.env
+Environment=INTAKE_TENANT=dar
+Environment=INTAKE_USERNAME=advelop_dar_bot
+Environment=INTAKE_RELAY_MODULE=/opt/dar-feed-monitor/deploy/relay.py
+Environment=INTAKE_DATABASE=/var/lib/dar-telegram-relay/relay.sqlite3
+Environment=INTAKE_SECRET_ENV=DAR_PATH_SECRET
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=RELAY_DELIVERY_MODE=polling
+ExecStart=/usr/bin/python3 /opt/advelop-command-intake/intake.py
+Restart=always
+RestartSec=5
+WatchdogSec=180
+NotifyAccess=main
+TimeoutStopSec=10
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/dar-telegram-relay
+
+[Install]
+WantedBy=multi-user.target

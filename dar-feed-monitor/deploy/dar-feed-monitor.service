@@ -1,0 +1,24 @@
+[Unit]
+Description=DAR inventory and feed monitor
+After=network-online.target dar-telegram-relay.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=dar-monitor
+Group=dar-monitor
+WorkingDirectory=/var/lib/dar-feed-monitor
+EnvironmentFile=/etc/dar-feed-monitor.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=TELEGRAM_IP_FAMILY=ipv6
+ExecStart=/usr/bin/python3 /opt/dar-feed-monitor/monitor.py --cache-dir /var/lib/dar-feed-monitor/cache --output /var/lib/dar-feed-monitor/latest.json --state-file /var/lib/dar-feed-monitor/state.json --send-telegram --force-notify
+TimeoutStartSec=8min
+StateDirectory=dar-feed-monitor
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+

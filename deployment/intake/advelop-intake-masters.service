@@ -1,0 +1,35 @@
+[Unit]
+Description=ADVelop masters durable Telegram intake
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=advelop-relay
+Group=advelop-relay
+WorkingDirectory=/var/lib/advelop-telegram-relay
+EnvironmentFile=/etc/advelop-telegram-relay.env
+Environment=INTAKE_TENANT=masters
+Environment=INTAKE_USERNAME=advelopmastersbot
+Environment=INTAKE_RELAY_MODULE=/opt/advelop-telegram-relay/relay.py
+Environment=INTAKE_DATABASE=/var/lib/advelop-telegram-relay/relay.sqlite3
+Environment=INTAKE_SECRET_ENV=MASTERS_PATH_SECRET
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=RELAY_DELIVERY_MODE=polling
+Environment=INTAKE_TOKEN_FILE=/var/lib/advelop-telegram-relay/intake-tokens/masters.token
+ExecStart=/usr/bin/python3 /opt/advelop-command-intake/intake.py
+Restart=always
+RestartSec=5
+WatchdogSec=180
+NotifyAccess=main
+TimeoutStopSec=10
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/advelop-telegram-relay
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+.cache/
+.tools/
+.state.json
+.state.json.pending
+reports/
+__pycache__/
+*.pyc
+.DS_Store
+.env

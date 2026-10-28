@@ -1,0 +1,142 @@
+name: MASTERS feed monitor
+
+on:
+  schedule:
+    # Moscow 09:00, 13:00, 15:30, 18:30 (UTC+3).
+    - cron: "0 6,10 * * *"
+    - cron: "30 12,15 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Режим запуска"
+        type: choice
+        required: true
+        default: digest
+        options:
+          - digest
+          - monitor
+          - sync
+
+permissions:
+  contents: read
+
+concurrency:
+  group: masters-monitor-schedule
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+          # monitor.py uses only the standard library. A pip cache would add
+          # cache traffic and storage without restoring any dependencies.
+
+      - name: Restore alert state
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'monitor'
+        id: restore-state
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: .state.json
+          key: masters-alert-state-v1-${{ github.run_id }}
+          restore-keys: |
+            masters-alert-state-v1-
+
+      - name: Statistics day (Moscow)
+        id: stats-day
+        run: |
+          python3 -c 'import datetime,zoneinfo; print("date="+(datetime.datetime.now(zoneinfo.ZoneInfo("Europe/Moscow")).date()-datetime.timedelta(days=1)).isoformat())' >> "$GITHUB_OUTPUT"
+
+      - name: Restore daily Cian statistics
+        id: stats-cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: .cache/statistics-masters-cian.json
+          key: masters-cian-statistics-${{ steps.stats-day.outputs.date }}
+          restore-keys: |
+            masters-cian-statistics-${{ steps.stats-day.outputs.date }}-
+
+      - name: Compare site and feeds
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          CIAN_API_KEY: ${{ secrets.CIAN_API_KEY }}
+          AVITO_CLIENT_ID: ${{ secrets.AVITO_CLIENT_ID }}
+          AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
+          TELEGRAM_LATEST_MESSAGE_URL: ${{ secrets.TELEGRAM_LATEST_MESSAGE_URL }}
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+          DISPATCH_MODE: ${{ inputs.mode }}
+        shell: bash
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" && "$DISPATCH_MODE" == "sync" ]]; then
+            python3 monitor.py --sync-telegram-report analysis/live-report.json
+            exit 0
+          fi
+
+          args=(
+            --cache-dir .cache
+            --output reports/latest.json
+            --send-telegram
+            --state-file .state.json
+            --notify-after 2
+          )
+
+          # Every scheduled run is a status update.  Alert-state suppression is
+          # kept only for manually dispatched monitor runs.
+          if [[ "$EVENT_NAME" == "schedule" ]]; then
+            args+=(--force-notify)
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$DISPATCH_MODE" == "digest" ]]; then
+            args+=(--force-notify)
+          fi
+
+          python3 monitor.py "${args[@]}"
+
+      - name: Check statistics completeness
+        if: always()
+        id: stats-complete
+        run: |
+          python3 -c 'import json,pathlib; p=pathlib.Path(".cache/statistics-masters-cian.json"); print("complete="+str(p.exists() and json.loads(p.read_text()).get("status")=="ok").lower())' >> "$GITHUB_OUTPUT"
+
+      - name: Save complete daily Cian statistics
+        if: always() && steps.stats-complete.outputs.complete == 'true' && steps.stats-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: .cache/statistics-masters-cian.json
+          key: masters-cian-statistics-${{ steps.stats-day.outputs.date }}
+
+      - name: Save resumable partial Cian statistics
+        if: always() && steps.stats-complete.outputs.complete != 'true' && hashFiles('.cache/statistics-masters-cian.json') != '' && steps.stats-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: .cache/statistics-masters-cian.json
+          key: masters-cian-statistics-${{ steps.stats-day.outputs.date }}-${{ github.run_id }}
+
+      - name: Upload full report
+        if: always() && hashFiles('reports/latest.json') != ''
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: masters-report-${{ github.run_id }}
+          path: reports/latest.json
+          retention-days: 1
+
+      - name: Save alert state
+        if: >-
+          always() &&
+          github.event_name == 'workflow_dispatch' &&
+          inputs.mode == 'monitor' &&
+          hashFiles('.state.json') != ''
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: .state.json
+          key: masters-alert-state-v1-${{ github.run_id }}

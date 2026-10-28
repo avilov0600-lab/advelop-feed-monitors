@@ -1,0 +1,34 @@
+[Unit]
+Description=ADVelop rodina durable Telegram intake
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=rodina-monitor
+Group=rodina-monitor
+WorkingDirectory=/var/lib/rodina-feed-monitor
+EnvironmentFile=/etc/rodina-feed-monitor.env
+Environment=INTAKE_TENANT=rodina
+Environment=INTAKE_USERNAME=advelop_rodina_bot
+Environment=INTAKE_RELAY_MODULE=/opt/developer-feed-monitor/deploy/relay.py
+Environment=INTAKE_DATABASE=/var/lib/rodina-feed-monitor/subscribers.sqlite3
+Environment=INTAKE_SECRET_ENV=RELAY_PATH_SECRET
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=RELAY_DELIVERY_MODE=polling
+ExecStart=/usr/bin/python3 /opt/advelop-command-intake/intake.py
+Restart=always
+RestartSec=5
+WatchdogSec=180
+NotifyAccess=main
+TimeoutStopSec=10
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/rodina-feed-monitor
+
+[Install]
+WantedBy=multi-user.target

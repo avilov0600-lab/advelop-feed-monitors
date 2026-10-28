@@ -1,0 +1,96 @@
+name: IKON feed monitor
+
+on:
+  # Production runs on Timeweb; manual GitHub diagnostics only.
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Режим запуска"
+        required: true
+        default: digest
+        type: choice
+        options:
+          - digest
+          - monitor
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ikon-monitor-schedule
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    # Enable only after all IKON secrets are configured.
+    if: github.event_name == 'workflow_dispatch' || vars.IKON_MONITOR_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate daily schedule
+        id: schedule-policy
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: python3 schedule_policy.py
+
+      - name: Set up Python
+        if: steps.schedule-policy.outputs.run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          # Standard library only: no dependency installation or pip cache.
+
+      - name: Restore alert state
+        if: steps.schedule-policy.outputs.run == 'true' && github.event_name == 'workflow_dispatch' && inputs.mode == 'monitor'
+        uses: actions/cache/restore@v4
+        with:
+          path: .state.json
+          key: ikon-alert-state-v1-${{ github.run_id }}
+          restore-keys: |
+            ikon-alert-state-v1-
+
+      - name: Compare sources, feeds and platforms
+        if: steps.schedule-policy.outputs.run == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_LATEST_MESSAGE_URL: ${{ secrets.TELEGRAM_LATEST_MESSAGE_URL }}
+          CIAN_API_KEY_RESIDENTIAL: ${{ secrets.CIAN_API_KEY_RESIDENTIAL }}
+          AVITO_CLIENT_ID_RESIDENTIAL: ${{ secrets.AVITO_CLIENT_ID_RESIDENTIAL }}
+          AVITO_CLIENT_SECRET_RESIDENTIAL: ${{ secrets.AVITO_CLIENT_SECRET_RESIDENTIAL }}
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_MODE: ${{ inputs.mode }}
+        shell: bash
+        run: |
+          args=(--cache-dir .cache --output reports/latest.json --send-telegram --state-file .state.json --notify-after 2)
+          if [[ "$EVENT_NAME" == "schedule" || "$DISPATCH_MODE" == "digest" ]]; then
+            args+=(--force-notify)
+          fi
+          python monitor.py "${args[@]}"
+
+      - name: Upload minimal run report
+        if: always() && steps.schedule-policy.outputs.run == 'true' && hashFiles('reports/latest.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ikon-report-${{ github.run_id }}
+          path: reports/latest.json
+          retention-days: 1
+          if-no-files-found: ignore
+
+      - name: Save alert state
+        if: >-
+          always() &&
+          steps.schedule-policy.outputs.run == 'true' &&
+          github.event_name == 'workflow_dispatch' &&
+          inputs.mode == 'monitor' &&
+          hashFiles('.state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .state.json
+          key: ikon-alert-state-v1-${{ github.run_id }}

@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: IKON Telegram webhook
+  version: 1.0.0
+paths:
+  /telegram:
+    post:
+      operationId: telegramWebhook
+      responses:
+        '200':
+          description: Telegram webhook reply
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: d4e7q4tsbnf8q795rj2h
+        tag: '$latest'
+        payload_format_version: '1.0'

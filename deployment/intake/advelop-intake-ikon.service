@@ -1,0 +1,35 @@
+[Unit]
+Description=ADVelop ikon durable Telegram intake
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=advelop-relay
+Group=advelop-relay
+WorkingDirectory=/var/lib/advelop-telegram-relay
+EnvironmentFile=/etc/advelop-telegram-relay.env
+EnvironmentFile=/etc/ikon-feed-monitor.env
+Environment=INTAKE_TENANT=ikon
+Environment=INTAKE_USERNAME=advelop_ikon_bot
+Environment=INTAKE_RELAY_MODULE=/opt/advelop-telegram-relay/relay.py
+Environment=INTAKE_DATABASE=/var/lib/advelop-telegram-relay/relay.sqlite3
+Environment=INTAKE_SECRET_ENV=IKON_PATH_SECRET
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=RELAY_DELIVERY_MODE=polling
+ExecStart=/usr/bin/python3 /opt/advelop-command-intake/intake.py
+Restart=always
+RestartSec=5
+WatchdogSec=180
+NotifyAccess=main
+TimeoutStopSec=10
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/advelop-telegram-relay
+
+[Install]
+WantedBy=multi-user.target

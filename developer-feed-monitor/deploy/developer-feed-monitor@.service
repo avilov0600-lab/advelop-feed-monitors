@@ -1,0 +1,23 @@
+[Unit]
+Description=ADVelop %i inventory and feed monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=%i-monitor
+Group=%i-monitor
+WorkingDirectory=/var/lib/%i-feed-monitor
+EnvironmentFile=/etc/%i-feed-monitor.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=TELEGRAM_IP_FAMILY=ipv6
+ExecStart=/usr/bin/python3 /opt/developer-feed-monitor/run.py --cache-dir /var/lib/%i-feed-monitor/cache --output /var/lib/%i-feed-monitor/latest.json --state-file /var/lib/%i-feed-monitor/state.json --send-telegram --force-notify
+TimeoutStartSec=15min
+StateDirectory=%i-feed-monitor
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6

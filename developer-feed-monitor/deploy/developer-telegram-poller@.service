@@ -1,0 +1,27 @@
+[Unit]
+Description=ADVelop %i Telegram commands
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i-monitor
+Group=%i-monitor
+WorkingDirectory=/var/lib/%i-feed-monitor
+EnvironmentFile=/etc/%i-feed-monitor.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=TELEGRAM_IP_FAMILY=ipv6
+ExecStart=/usr/bin/python3 /opt/developer-feed-monitor/deploy/poller.py
+StateDirectory=%i-feed-monitor
+StateDirectoryMode=0700
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

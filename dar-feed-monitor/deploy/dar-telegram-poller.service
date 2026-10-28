@@ -1,0 +1,26 @@
+[Unit]
+Description=DAR Telegram command polling (outbound only)
+After=network-online.target dar-telegram-relay.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dar-relay
+Group=dar-relay
+WorkingDirectory=/var/lib/dar-telegram-relay
+EnvironmentFile=/etc/dar-telegram-relay.env
+EnvironmentFile=/etc/dar-telegram-poller.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /opt/dar-feed-monitor/deploy/poller.py
+StateDirectory=dar-telegram-relay
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

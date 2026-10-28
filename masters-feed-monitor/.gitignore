@@ -1,0 +1,10 @@
+.cache/
+reports/
+__pycache__/
+*.pyc
+.env
+.state.json
+.telegram-state.json
+.tools/
+yandex_cloud/deploy.env
+telegram-relay-site/

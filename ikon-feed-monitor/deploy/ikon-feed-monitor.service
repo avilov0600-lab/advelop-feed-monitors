@@ -1,0 +1,26 @@
+[Unit]
+Description=IKON inventory and feed monitor
+After=network-online.target advelop-telegram-relay.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ikon-monitor
+Group=ikon-monitor
+WorkingDirectory=/var/lib/ikon-feed-monitor
+EnvironmentFile=/etc/ikon-feed-monitor.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=TZ=Europe/Moscow
+Environment=TELEGRAM_IP_FAMILY=ipv6
+ExecStart=/usr/bin/python3 /opt/ikon-feed-monitor/monitor.py --cache-dir /var/lib/ikon-feed-monitor/cache --output /var/lib/ikon-feed-monitor/latest.json --state-file /var/lib/ikon-feed-monitor/state.json --send-telegram --force-notify
+TimeoutStartSec=8min
+StateDirectory=ikon-feed-monitor
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+# monitor.py pins only client XML to IPv4; Telegram requires working IPv6 here.
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+

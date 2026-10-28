@@ -1,0 +1,12 @@
+[Unit]
+Description=DAR digest four times daily, Moscow
+
+[Timer]
+OnCalendar=*-*-* 09,13:00:00 Europe/Moscow
+OnCalendar=*-*-* 15,18:30:00 Europe/Moscow
+Persistent=true
+AccuracySec=1min
+Unit=dar-feed-monitor.service
+
+[Install]
+WantedBy=timers.target

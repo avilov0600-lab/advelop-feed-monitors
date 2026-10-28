@@ -1,0 +1,361 @@
+{
+  "asterus": {
+    "name": "Asterus",
+    "username": "advelop_asterus_bot",
+    "projects": {
+      "alia": {
+        "name": "Алиа",
+        "website": "https://alia.moscow/",
+        "master": {
+          "kind": "unavailable",
+          "url": "https://alia.moscow/",
+          "label": "Материнский источник не предоставлен: в анкете главная сайта"
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/alya/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/alya/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/alya/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/alya/domclick",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/alya/yandex3",
+          "yandex2": "https://newfeed.6feeds.ru/feeds/static/alya_yan_2/yandex2"
+        },
+        "cards": {
+          "yandex": "https://realty.ya.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/lia-2065082/",
+          "domclick": "https://domclick.ru/complexes/zhk-alia-aliia__112429"
+        },
+        "website_catalog_url": "https://alia.moscow/flats/",
+        "website_count_pattern": "flatsTotalCount:\\s*(\\d+)",
+        "subset_feeds": [
+          "yandex2"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "alia"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "alia"
+        ]
+      }
+    }
+  },
+  "rodina": {
+    "name": "Родина",
+    "username": "advelop_rodina_bot",
+    "projects": {
+      "soyuz": {
+        "name": "Союз",
+        "website": "https://xn--g1ani7c.xn--80adxhks/",
+        "master": {
+          "kind": "profitbase",
+          "url": "https://pb5229.profitbase.ru/export/profitbase_xml/b46aac8d4fbc95808bf11bc940791ddd",
+          "label": "Материнский фид клиента",
+          "categories": [
+            "квартира",
+            "апартаменты"
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/soyuz/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/soyuz/yandex"
+        },
+        "cards": {
+          "yandex": "https://realty.ya.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/soyuz-3001459/"
+        }
+      },
+      "peredelkino": {
+        "name": "Переделкино",
+        "website": "https://rodina-peredelkino.ru/",
+        "master": {
+          "kind": "profitbase",
+          "url": "https://pb5229.profitbase.ru/export/profitbase_xml/e8bfa49a0095dc86fdc45b9a7164ba82",
+          "label": "Материнский фид клиента",
+          "categories": [
+            "квартира",
+            "апартаменты"
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/rodina_peredelkino_adv/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/rodina_peredelkino_adv/yandex"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/rodina-peredelkino-4017018/"
+        }
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "soyuz",
+          "peredelkino"
+        ]
+      }
+    }
+  },
+  "plato": {
+    "name": "Плато Девелопмент",
+    "username": "advelop_plato_kutuzov_bot",
+    "projects": {
+      "kutuzov": {
+        "name": "Кутузов Сити",
+        "website": "https://kutuzov-city.ru/",
+        "master": {
+          "kind": "cian",
+          "url": "https://kutuzov-city.ru/upload/realty_export/cian_realty.xml",
+          "label": "Материнский фид клиента",
+          "categories": [
+            "квартира",
+            "апартаменты"
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/kutuzov_city/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/kutuzov_city/yandex",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/kutuzov_city/yandex3",
+          "yandex2": "https://newfeed.6feeds.ru/feeds/static/kutuzov_city_yan_2/yandex2"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/kutuzov-siti-4104939/"
+        },
+        "subset_feeds": [
+          "yandex2"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "kutuzov"
+        ]
+      }
+    }
+  },
+  "aston": {
+    "name": "Астон",
+    "username": "advelop_aston_bot",
+    "projects": {
+      "zori": {
+        "name": "Астон. А зори здесь тихие",
+        "website": "https://astondom.ru/vdk",
+        "master": {
+          "kind": "macro",
+          "url": "https://api.macroserver.ru/estate/export/web/zdVc0JVaSr1gKxpbtG7AmVbxgLZHBr5Pg_OMiDrnhK0LHDW2uiK3qruU7cxOFuJ6b46vT-P-RWhbzaAbxAvztbgL8dAaYSLpUK44At3rIB5tvLYr9KKPWUmcCjsKh2SmuYs_cpp8MTc2MzcxMTczNXw5MTM3Mg/808-web.json?feed_id=8257",
+          "label": "Материнский JSON клиента",
+          "parent_ids": [
+            9356422
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/aston_zori/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/aston_zori/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/aston_zori/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/aston_zori/domclick",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/aston_zori/m2",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/aston_zori/yandex3"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/vladivostok/kupit/novostrojka/aston-a-zori-zdes-tihie-4201721/",
+          "domclick": "https://vladivostok.domclick.ru/complexes/aston-a-zori-zdes-tikhie__122859",
+          "m2": "https://m2.ru/vladivostok/novostroyki/zhk-aston-a-zori-zdes-tikhie-14475/"
+        }
+      },
+      "stars": {
+        "name": "Шесть Звезд",
+        "website": "https://astondom.ru/nsk",
+        "master": {
+          "kind": "macro",
+          "url": "https://api.macroserver.ru/estate/export/web/zdVc0JVaSr1gKxpbtG7AmVbxgLZHBr5Pg_6JgzrnhK0LHDW2uiK3qruU7cxOFuJ6b46vT-P-RWhbzaAbxAvztbgL8dAaYSLpUK44At3rIB5tvLYr9KKPWUueCjoOh2SmuY0_cpp8MTY4MzA5MDY3OHwyYTk0NA/553-web.json?feed_id=3047",
+          "label": "Материнский JSON клиента",
+          "parent_ids": [
+            6317479,
+            7735229
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/domclick",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/m2",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/aston_6_zvezd/yandex3"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/novosibirsk/kupit/novostrojka/aston-shest-zvezd-496942/",
+          "domclick": "https://novosibirsk.domclick.ru/complexes/zhk-aston-shest-zvezd__1936",
+          "m2": "https://m2.ru/novosibirsk/novostroyki/zhk-aston-shest-zvezd-14895/"
+        }
+      },
+      "dvizhenie": {
+        "name": "Движение",
+        "website": "https://astondom.ru/ekb",
+        "master": {
+          "kind": "macro",
+          "url": "https://api.macroserver.ru/estate/export/web/zdVc0JVaSr1gKxpbtG7AmVbxgLZHBr5Pg_-MhjrnhK0LHDW2uiK3qruU7cxOFuJ6b46vT-P-RWhbzaAbxAvztbgL8dAaYSLpUK44At3rIB5tvLYr9KKPWUmaCjsLh2SmuY8_cpp8MTYzNTMyODgzNHxjZTgzOA/406-web.json?feed_id=1160",
+          "label": "Материнский JSON клиента",
+          "parent_ids": [
+            6055767,
+            6055776
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/domclick",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/m2",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie/yandex3"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/ekaterinburg/kupit/novostrojka/aston-dvizhenie-3697890/",
+          "domclick": "https://ekaterinburg.domclick.ru/complexes/aston-dvizhenie__119769",
+          "m2": "https://m2.ru/yekaterinburg/novostroyki/zhk-aston-dvizhenie-12628/"
+        }
+      },
+      "vverh": {
+        "name": "Движение вверх",
+        "website": "https://astondom.ru/ekb",
+        "master": {
+          "kind": "macro",
+          "url": "https://api.macroserver.ru/estate/export/web/zdVc0JVaSr1gKxpbtG7AmVbxgLZHBr5Pg_-MhjrnhK0LHDW2uiK3qruU7cxOFuJ6b46vT-P-RWhbzaAbxAvztbgL8dAaYSLpUK44At3rIB5tvLYr9KKPWUmaCjsLh2SmuY8_cpp8MTYzNTMyODgzNHxjZTgzOA/406-web.json?feed_id=1160",
+          "label": "Материнский JSON клиента",
+          "parent_ids": [
+            7222120
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/domclick",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/m2",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/aston_dvizhenie_vverh/yandex3"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/ekaterinburg/kupit/novostrojka/aston-dvizhenie-vverh-4894156/",
+          "domclick": "https://ekaterinburg.domclick.ru/complexes/aston-dvizhenie-vverkh__119769?utm_referrer=https%3A%2F%2Fyandex.ru%2F",
+          "m2": "https://m2.ru/yekaterinburg/novostroyki/zhk-aston-dvizhenie-vverkh-14866/"
+        }
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "zori"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "zori",
+          "stars",
+          "dvizhenie",
+          "vverh"
+        ]
+      },
+      "cian_2": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_2"
+        ],
+        "projects": [
+          "stars"
+        ]
+      },
+      "cian_3": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_3"
+        ],
+        "projects": [
+          "dvizhenie",
+          "vverh"
+        ]
+      }
+    }
+  },
+  "summa": {
+    "name": "DomDau",
+    "username": "advelop_summa_bot",
+    "projects": {
+      "dau": {
+        "name": "Дом Дау",
+        "website": "https://domdau.moscow/",
+        "website_catalog_url": "https://domdau.moscow/hydra/json/data.json",
+        "website_catalogue_kind": "domdau",
+        "master": {
+          "kind": "profitbase",
+          "url": "https://pb20909.profitbase.ru/export/profitbase_xml/15158b2542e32931007737e7ca1e8eae?scheme=https",
+          "label": "Материнский фид клиента",
+          "categories": [
+            "квартира",
+            "апартаменты"
+          ]
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/dom_day/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/dom_day/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/dom_day/avito",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/dom_day/m2",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/dom_day/domclick",
+          "yandex3": "https://newfeed.6feeds.ru/feeds/static/dom_day/yandex3"
+        },
+        "cards": {
+          "yandex": "https://realty.yandex.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/dom-dau-3484132/",
+          "domclick": "https://domclick.ru/complexes/zhk-dom-dau__118883?utm_referrer=https%3A%2F%2Fwww.google.com%2F",
+          "m2": "https://m2.ru/moskva/novostroyki/zhk-dom-dau-11995/"
+        }
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "dau"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "dau"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+[Unit]
+Description=ADVelop Telegram subscriber relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=advelop-relay
+Group=advelop-relay
+EnvironmentFile=/etc/advelop-telegram-relay.env
+ExecStart=/usr/bin/python3 /opt/advelop-telegram-relay/relay.py
+Restart=on-failure
+RestartSec=3
+StateDirectory=advelop-telegram-relay
+RuntimeDirectory=advelop-telegram-relay
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/advelop-telegram-relay
+
+[Install]
+WantedBy=multi-user.target
