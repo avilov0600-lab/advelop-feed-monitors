@@ -72,6 +72,42 @@ repository does not create schedules, deploy services or send Telegram messages.
 The per-component historical `.github/workflows` directories are nested and do
 not run from this repository's root.
 
+## Public website availability — 28 October 2026
+
+Every report includes a website availability row beside each project's website
+lot count. A positive row means the public endpoint responds; it does not prove
+that the inventory parser obtained valid lots. Parsing failures remain unknown,
+never zero. Website availability is secondary and does not change the maternal
+XML baseline or the feed comparison status.
+
+`site_availability.py` contains the supplied HTTP checker, hardened for malformed
+HTTP responses and duplicate URLs. `site_availability_integration.py` is the
+report adapter. It checks only configured public websites, never XML feeds,
+marketplace cards or private APIs. It uses GET without reading the response
+body, follows redirects and verifies TLS. Scheduled reports use three attempts,
+an 8-second request timeout and 2-second pauses. The standalone checker's original
+30/3/30 defaults remain available. Checks within a client are sequential and
+identical URLs are requested once per report.
+
+There are no separate Telegram outage messages, availability databases, history
+files or extra scheduled runs. `/start` returns the saved report and makes no
+website request. Projects without a configured website do not gain a fabricated
+availability result. Each observation has its own time.
+
+For an operational presentation refresh, `--refresh-site-availability --output
+/var/lib/CLIENT-feed-monitor/latest.json` reuses a valid existing report and
+refreshes only public website availability. Feed/API requests are skipped and
+the original lot counts and feed check time are retained. Add the normal send
+flags only when a new broadcast is intended.
+
+The source-only VPS rollout is reproducible with
+`scripts/prepare_site_availability_deployment.py` and guarded by exact source
+hashes in `scripts/deploy_site_availability.py`. Original VPS applications use
+the verified `b506c64` baseline plus this focused patch; the isolated five-client
+tree uses `a281a8b` plus the patch. Do not overwrite the original developer engine
+with the newer isolated engine. Rollback copies are retained on the VPS.
+MASTERS is deployed separately in its original private GitHub repository.
+
 ## Credentials and runtime state
 
 No real tokens, private keys, subscriber identifiers, databases, production

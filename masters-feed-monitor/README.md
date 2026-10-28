@@ -157,3 +157,19 @@ bash yandex_cloud/deploy.sh
 считываются статусы последнего импорта. Для Домклик действует согласованное
 правило: равное количество во всех товарных XML означает `площадка ОК`, любое
 расхождение даёт красный статус `площадку требуется проверить`.
+
+## Website availability in reports
+
+Each regular report now includes the public Capital Group catalogue HTTP status
+next to the website lot count. The check performs GET requests without reading
+the response body, follows redirects and verifies TLS. Reports use up to three
+attempts, an 8-second request timeout and 2-second retry pauses. No separate
+Telegram outage messages, status database or additional schedule is created.
+A successful HTTP response does not confirm that the lot catalogue was parsed;
+missing inventory remains unknown rather than zero. The maternal XML remains
+authoritative and availability does not alter feed comparison results.
+
+For operational use, `--refresh-site-availability --output reports/latest.json`
+refreshes only this status in an existing saved report, retaining the original
+feed check time and counts. It does not request XML feeds or marketplace APIs.
+The website row has its own observation time. `/start` still returns saved text.
