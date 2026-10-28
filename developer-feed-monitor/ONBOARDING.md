@@ -76,3 +76,14 @@ client material or inventory mismatches while the services remain healthy.
 Original application files and all eight original intake services were left in
 place. Temporary credential bundles on the Mac and VPS were removed after the
 five root-owned 0600 environment files were verified.
+
+## Subscriber delivery recheck
+
+All five bots were checked again through Telegram Web after the 15:30 scheduled
+run. `/start` returned that saved scheduled report and the subscription
+confirmation; its verification timestamp did not change. The same deployed
+registry/intake combination is covered by tests for three independent new chats
+per client, the next broadcast recipient list without any owner ID, repeated
+starts without duplicate subscriptions, a network failure followed by a worker
+restart, and one user's Telegram rate limit without blocking the next colleague.
+These checks add no runtime changes and do not rerun feed/API requests on `/start`.
