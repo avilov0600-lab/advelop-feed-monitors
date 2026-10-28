@@ -186,6 +186,16 @@ def _clean_id(value: Any) -> str:
     return str(value or "").strip()
 
 
+def _feed_external_id(value: Any, *, source: str, project: str) -> str:
+    ident = _clean_id(value)
+    suffix = DATA.get('projects', {}).get(project, {}).get('feed_id_suffixes', {}).get(source)
+    if suffix:
+        if not ident.endswith(suffix) or not ident[:-len(suffix)]:
+            raise ValueError('Configured feed ID namespace changed')
+        return ident[:-len(suffix)]
+    return ident
+
+
 def parse_macro(path: Path, *, project: str, category: str, source: dict) -> tuple[list[Lot], dict]:
     rows = json.loads(path.read_text(encoding='utf-8'))
     if not isinstance(rows, list) or not rows or any(not isinstance(r, dict) for r in rows):
@@ -285,15 +295,33 @@ def parse_master_xml(
     }
 
 
-def parse_cian(path: Path, *, project: str, category: str) -> tuple[list[Lot], dict[str, Any]]:
+def parse_cian(path: Path, *, project: str, category: str, source: dict | None = None) -> tuple[list[Lot], dict[str, Any]]:
     root = _xml_root(path)
+    objects = root.findall("object")
+    raw_count = len(objects)
+    if source is not None:
+        if root.tag != 'feed' or not objects:
+            raise ValueError('Client Cian XML schema is missing')
+        names = {str(name).strip().casefold() for name in source.get('project_names', [])}
+        name_path = source.get('project_name_path', 'JKSchema/Name')
+        allowed = set(source.get('allowed_categories', ['newBuildingFlatSale', 'flatSale']))
+        objects = [obj for obj in objects if _text(obj, 'Category') in allowed
+                   and (not names or _text(obj, name_path).casefold() in names)]
+        if not objects:
+            raise ValueError('Residential project not found in client XML')
+        if any(not _text(obj, 'ExternalId') or not _text(obj, 'TotalArea') for obj in objects):
+            raise ValueError('Client Cian XML identity/area missing')
     lots: list[Lot] = []
-    for obj in root.findall("object"):
+    for obj in objects:
         description = _text(obj, "Description")
         category_value = _text(obj, "Category")
+        building_floors = _integer(_text(obj, "Building/FloorsCount"))
+        if source is not None and building_floors is not None and building_floors <= 0:
+            building_floors = None
         lots.append(
             Lot(
-                external_id=_clean_id(_text(obj, "ExternalId")),
+                external_id=(_clean_id(_text(obj, "ExternalId")) if source is not None
+                             else _feed_external_id(_text(obj, "ExternalId"), source='cian', project=project)),
                 source="cian",
                 project=project,
                 category=category,
@@ -305,13 +333,18 @@ def parse_cian(path: Path, *, project: str, category: str) -> tuple[list[Lot], d
                 rooms=_rooms(_text(obj, "FlatRoomsCount"), description,
                     "1" if _text(obj, "FlatRoomsCount") == "9" else ""),
                 floor=_integer(_text(obj, "FloorNumber")),
-                floors_total=_integer(_text(obj, "Building/FloorsCount")),
+                floors_total=building_floors,
                 apartment=_text(obj, "Apartment") or None,
                 house=_text(obj, "Building/Name") or None,
                 description=description,
             )
         )
-    return lots, {"feed_version": _text(root, "feed_version") or None}
+    meta = {"feed_version": _text(root, "feed_version") or None}
+    if source is not None:
+        meta.update(raw_count=raw_count, project_residential_count=len(lots),
+                    project_names=list(source.get('project_names', [])),
+                    missing_building_height_count=sum(lot.floors_total is None for lot in lots))
+    return lots, meta
 
 
 def parse_avito(path: Path, *, project: str, category: str) -> tuple[list[Lot], dict[str, Any]]:
@@ -745,6 +778,9 @@ def _issue_count(value: Any) -> int:
 
 
 def fetch_cian_snapshot(category: str, account: str = "cian_1") -> dict[str, Any]:
+    if API_ACCOUNTS.get(account, {}).get('enabled') is False:
+        return {'status': 'not_configured', 'checked_at': _now(),
+                'reason': API_ACCOUNTS[account]['disabled_reason']}
     secret_name = API_SECRETS[category][account][0]
     token = os.environ.get(secret_name)
     checked_at = _now()
@@ -1031,7 +1067,7 @@ def _master_for(
             elif source['kind'] == 'macro':
                 lots, meta = parse_macro(_master_xml_path(cache_dir, project), project=project, category=category, source=source)
             elif source['kind'] == 'cian':
-                lots, meta = parse_cian(_master_xml_path(cache_dir, project), project=project, category=category)
+                lots, meta = parse_cian(_master_xml_path(cache_dir, project), project=project, category=category, source=source)
                 if not lots:
                     raise ValueError('client XML has no residential inventory')
             else:
@@ -1067,6 +1103,10 @@ def analyze_api(
 ) -> dict[str, Any]:
     active_projects = API_ACTIVE_PROJECTS[category][source]
     feed_source = API_ACCOUNTS[source]['source']
+    if API_ACCOUNTS[source].get('enabled') is False:
+        return {**snapshot, 'status': 'not_configured', 'comparison_status': 'error',
+                'active_projects': list(active_projects), 'expected_feed_count': None,
+                'actual_platform_count': None, 'reason': API_ACCOUNTS[source]['disabled_reason']}
     missing_projects = [
         project for project in active_projects
         if feed_source not in feeds_by_project.get(project, {})

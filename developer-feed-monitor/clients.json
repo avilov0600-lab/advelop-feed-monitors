@@ -357,5 +357,501 @@
         ]
       }
     }
+  },
+  "donstroy": {
+    "name": "Донстрой",
+    "username": "advelop_donstroy_bot",
+    "onboarding": {
+      "status": "awaiting_materials",
+      "source_sheet_id": "1ysXOnSuc6rOpAcDRDU8DgCsEPAjYTijx1jYUharfqN0",
+      "source_rows": [
+        16,
+        17,
+        18
+      ],
+      "reviewed_on": "2026-10-28"
+    },
+    "projects": {
+      "reka": {
+        "name": "Река",
+        "website": "https://donstroy.moscow/objects/reka/",
+        "master": {
+          "kind": "cian",
+          "url": "http://donstroy2.nichost.ru/XMLFiles/CianNEW.XML",
+          "label": "Материнский XML Донстрой",
+          "project_names": [
+            "Река"
+          ]
+        },
+        "feeds": {
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/reka_adv/yandex",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/reka_adv/cian",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/reka_adv/avito",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/reka_adv/m2"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, М2; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "m2"
+        ],
+        "feed_id_suffixes": {
+          "cian": "_11"
+        }
+      },
+      "ostrov": {
+        "name": "Остров",
+        "website": "https://donstroy.moscow/objects/ostrov/",
+        "master": {
+          "kind": "cian",
+          "url": "http://donstroy2.nichost.ru/XMLFiles/CianNEW.XML",
+          "label": "Материнский XML Донстрой",
+          "project_names": [
+            "Остров"
+          ]
+        },
+        "feeds": {
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/ostrov/yandex",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/ostrov/cian",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/ostrov/avito",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/ostrov/m2"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, М2; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "m2"
+        ],
+        "feed_id_suffixes": {
+          "cian": "_1"
+        }
+      },
+      "tatarskaya": {
+        "name": "Татарская",
+        "website": "https://donstroy.moscow/objects/tatarskaya-35/",
+        "master": {
+          "kind": "cian",
+          "url": "http://donstroy2.nichost.ru/XMLFiles/CianNEW.XML",
+          "label": "Материнский XML Донстрой",
+          "project_names": [
+            "Татарская 35"
+          ]
+        },
+        "feeds": {
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/tatarskay_35_adv/yandex",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/tatarskay_35_adv/cian",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/tatarskay_35_adv/avito",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/tatarskay_35_adv/m2"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, М2; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "m2"
+        ],
+        "feed_id_suffixes": {
+          "cian": "_11"
+        }
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "reka",
+          "ostrov",
+          "tatarskaya"
+        ],
+        "enabled": false,
+        "disabled_reason": "Ключ Циан совпадает у Донстроя и AFI; нужен подтверждённый ключ отдельного кабинета"
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "reka",
+          "ostrov",
+          "tatarskaya"
+        ]
+      }
+    }
+  },
+  "kortros": {
+    "name": "Кортрос",
+    "username": "advelop_kortros_bot",
+    "onboarding": {
+      "status": "awaiting_materials",
+      "source_sheet_id": "1ysXOnSuc6rOpAcDRDU8DgCsEPAjYTijx1jYUharfqN0",
+      "source_rows": [
+        19,
+        20
+      ],
+      "reviewed_on": "2026-10-28"
+    },
+    "projects": {
+      "secret_garden": {
+        "name": "Secret Garden",
+        "website": "https://kortros.ru/projects/secretgarden",
+        "master": {
+          "kind": "cian",
+          "url": "https://feeds.kortros.ru/cian/?obj=secretgarden",
+          "label": "Материнский XML Кортрос"
+        },
+        "feeds": {
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/secret_garden/yandex",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/secret_garden/cian",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/secret_garden/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/secret_garden/domclick"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "М2: в анкете есть название площадки, но нет ссылки на XML; размещение требуется уточнить",
+          "Не заданы карточки площадок: Яндекс Недвижимость, Домклик; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "domclick"
+        ]
+      },
+      "octarin": {
+        "name": "Октарин",
+        "website": "https://kgd.kortros.ru/projects/octarin",
+        "master": {
+          "kind": "cian",
+          "url": "https://feeds.kortros.ru/cian/?obj=octarin",
+          "label": "Материнский XML Кортрос"
+        },
+        "feeds": {
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/oktarin_adv/yandex",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/oktarin_adv/cian",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/oktarin_adv/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/oktarin_adv/domclick",
+          "m2": "https://newfeed.6feeds.ru/feeds/static/oktarin_adv/m2"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, Домклик, М2; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "domclick",
+          "m2"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "secret_garden"
+        ]
+      },
+      "cian_2": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_2"
+        ],
+        "projects": [
+          "octarin"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "secret_garden"
+        ]
+      },
+      "avito_2": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_2",
+          "AVITO_CLIENT_SECRET_AVITO_2"
+        ],
+        "projects": [
+          "octarin"
+        ]
+      }
+    }
+  },
+  "afi": {
+    "name": "AFI",
+    "username": "advelop_afi_bot",
+    "onboarding": {
+      "status": "awaiting_materials",
+      "source_sheet_id": "1ysXOnSuc6rOpAcDRDU8DgCsEPAjYTijx1jYUharfqN0",
+      "source_rows": [
+        21,
+        22,
+        23
+      ],
+      "reviewed_on": "2026-10-28"
+    },
+    "projects": {
+      "sireneviy_park": {
+        "name": "Сиреневый парк",
+        "website": "https://afi-park.ru/",
+        "master": {
+          "kind": "unavailable",
+          "label": "Нужен материнский фид клиента: в анкете указана главная сайта"
+        },
+        "feeds": {
+          "avito": "https://newfeed.6feeds.ru/feeds/static/sireneviy_park_adv/avito",
+          "cian": "https://newfeed.6feeds.ru/feeds/static/sireneviy_park_adv/cian",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/sireneviy_park_adv/domclick"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Домклик; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "domclick"
+        ]
+      },
+      "odinburg": {
+        "name": "Одинбург",
+        "website": "https://odinburg.ru/",
+        "master": {
+          "kind": "unavailable",
+          "label": "Нужен материнский фид клиента: в анкете указана главная сайта"
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/odinburg_adv/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/odinburg_adv/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/odinburg_adv/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/odinburg_adv/domclick"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, Домклик; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "domclick"
+        ]
+      },
+      "afi_tower": {
+        "name": "AFI Tower",
+        "website": "https://afitower.ru/",
+        "master": {
+          "kind": "unavailable",
+          "label": "Нужен материнский фид клиента: в анкете указана главная сайта"
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/afi_tower_adv/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/afi_tower_adv/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/afi_tower_adv/avito",
+          "domclick": "https://newfeed.6feeds.ru/feeds/static/afi_tower_adv/domclick"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, Домклик; факт публикации не проверен"
+        ],
+        "missing_card_sources": [
+          "yandex",
+          "domclick"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "sireneviy_park",
+          "odinburg",
+          "afi_tower"
+        ],
+        "enabled": false,
+        "disabled_reason": "Ключ Циан совпадает у Донстроя и AFI; нужен подтверждённый ключ отдельного кабинета"
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "sireneviy_park",
+          "odinburg",
+          "afi_tower"
+        ]
+      }
+    }
+  },
+  "apsis": {
+    "name": "APSIS GLOBE",
+    "username": "advelop_apsis_bot",
+    "onboarding": {
+      "status": "awaiting_materials",
+      "source_sheet_id": "1ysXOnSuc6rOpAcDRDU8DgCsEPAjYTijx1jYUharfqN0",
+      "source_rows": [
+        24
+      ],
+      "reviewed_on": "2026-10-28"
+    },
+    "projects": {
+      "gala": {
+        "name": "ГАЛА",
+        "website": "https://galaresidence.ru/",
+        "master": {
+          "kind": "unavailable",
+          "label": "Независимый эталон не указан: клиентские XML совпадают с рекламными"
+        },
+        "feeds": {
+          "yandex": "https://pb21718.profitbase.ru/export/yandex/161866bbeb68e36d1aa3fde9e72a0d86?scheme=https",
+          "cian": "https://pb21718.profitbase.ru/export/cian/433f5f75bba870c6b710d5ebcae00a82?scheme=https",
+          "domclick": "https://pb21718.profitbase.ru/export/domclick/014670272a337837fc9ebe79fdb67d14?scheme=https",
+          "avito": "https://pb21718.profitbase.ru/export/avito/e8e5676ba73edad04d734d45b914469e?scheme=https"
+        },
+        "cards": {},
+        "onboarding_notes": [
+          "Не заданы карточки площадок: Яндекс Недвижимость, Домклик; факт публикации не проверен"
+        ],
+        "feed_origin": "client_direct",
+        "missing_card_sources": [
+          "yandex",
+          "domclick"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "gala"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "gala"
+        ]
+      }
+    }
+  },
+  "sovcombank": {
+    "name": "Совкомбанк",
+    "username": "advelop_sovcombank_bot",
+    "onboarding": {
+      "status": "awaiting_materials",
+      "source_sheet_id": "1ysXOnSuc6rOpAcDRDU8DgCsEPAjYTijx1jYUharfqN0",
+      "source_rows": [
+        25,
+        26
+      ],
+      "reviewed_on": "2026-10-28"
+    },
+    "projects": {
+      "serebro": {
+        "name": "Серебро",
+        "website": null,
+        "master": {
+          "kind": "unavailable",
+          "label": "Нужна исходная таблица лотов: ссылка в анкете отсутствует"
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/serebro/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/serebro/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/serebro/avito"
+        },
+        "cards": {
+          "cian": "https://zhk-serebro-pushkino-i.cian.ru/",
+          "yandex": "https://realty.yandex.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/serebro-369863/",
+          "avito": "https://zhk-serebro-pushkino.avito.ru/"
+        },
+        "onboarding_notes": [
+          "Сайт отсутствует по данным анкеты; этот этап проверки не применяется"
+        ]
+      },
+      "tri_kvartala": {
+        "name": "Три квартала",
+        "website": null,
+        "master": {
+          "kind": "unavailable",
+          "label": "Нужна исходная таблица лотов: ссылка в анкете отсутствует"
+        },
+        "feeds": {
+          "cian": "https://newfeed.6feeds.ru/feeds/static/tri_kvartala/cian",
+          "yandex": "https://newfeed.6feeds.ru/feeds/static/tri_kvartala/yandex",
+          "avito": "https://newfeed.6feeds.ru/feeds/static/tri_kvartala/avito"
+        },
+        "cards": {
+          "cian": "https://zhk-tri-kvartala-vidnoye-i.cian.ru/",
+          "yandex": "https://realty.yandex.ru/moskva_i_moskovskaya_oblast/kupit/novostrojka/tri-kvartala-320379/",
+          "avito": "https://zhk-tri-kvartala-razvilka.avito.ru/"
+        },
+        "onboarding_notes": [
+          "Сайт отсутствует по данным анкеты; этот этап проверки не применяется"
+        ]
+      }
+    },
+    "accounts": {
+      "cian_1": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_1"
+        ],
+        "projects": [
+          "serebro"
+        ]
+      },
+      "cian_2": {
+        "source": "cian",
+        "secrets": [
+          "CIAN_API_KEY_CIAN_2"
+        ],
+        "projects": [
+          "tri_kvartala"
+        ]
+      },
+      "avito_1": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_1",
+          "AVITO_CLIENT_SECRET_AVITO_1"
+        ],
+        "projects": [
+          "serebro"
+        ]
+      },
+      "avito_2": {
+        "source": "avito",
+        "secrets": [
+          "AVITO_CLIENT_ID_AVITO_2",
+          "AVITO_CLIENT_SECRET_AVITO_2"
+        ],
+        "projects": [
+          "tri_kvartala"
+        ]
+      }
+    }
   }
 }

@@ -258,6 +258,8 @@ def install(m, client_name):
             for account, names in m.API_SECRETS[category].items():
                 if not account.startswith('cian'):
                     continue
+                if getattr(m, 'API_ACCOUNTS', {}).get(account, {}).get('enabled') is False:
+                    continue
                 path = m._api_path(cache_dir,category,account)
                 snapshot = m._read_json(path)
                 snapshot['daily_statistics'] = daily_cian(cache_dir, category+'-'+account,
@@ -271,7 +273,13 @@ def install(m, client_name):
         report = original_analyze(cache_dir)
         for category_key,category in report['categories'].items():
             for project,value in category['projects'].items():
+                project_spec = getattr(m, 'DATA', {}).get('projects', {}).get(project, {})
+                if project_spec.get('missing_card_sources'):
+                    value['status'] = category['status'] = 'error'
                 value.setdefault('website',report.get('source_status',{}).get('websites',{}).get(project,{}))
+                if 'website' in project_spec and not project_spec['website']:
+                    value['website'] = {'status': 'not_applicable', 'lot_count': None,
+                                        'reason': 'У проекта нет сайта по данным анкеты'}
                 site=value['website']
                 if site.get('status') == 'OK' and 'ids' in site:
                     lots,_=m._master_for(cache_dir,report.get('source_status',{}),category_key,project)
@@ -308,8 +316,12 @@ def install(m, client_name):
                     e('Наши XML: '+m._feed_counts_line(project['feeds']))])
                 if master.get('status') == m.SOURCE_UNAVAILABLE:
                     lines.append(e('🔴 Эталон недоступен: '+master.get('reason','нет данных')))
+                for note in getattr(m, 'DATA', {}).get('projects', {}).get(project_key, {}).get('onboarding_notes', []):
+                    lines.append(e('⚪ ' + note))
                 if master.get('excluded_reserved'):
                     lines.append(f'Брони: {master["excluded_reserved"]} — отдельно, не ожидаются в рекламе')
+                if master.get('missing_building_height_count'):
+                    lines.append(e(f'⚪ В эталоне не указана этажность: {master["missing_building_height_count"]} квартир; сверка этажности не выполнена'))
                 if master.get('duplicate_ids') or master.get('missing_id_count'):
                     lines.append(e(f'🔴 Эталон: повторяющихся ID {len(master.get("duplicate_ids",[]))}, записей без ID {master.get("missing_id_count",0)}'))
                 comparison_groups = {}
@@ -363,7 +375,9 @@ def install(m, client_name):
                     if site.get('data_origin') and not compact:
                         lines.append('ℹ️ Сайт и каталог клиента используют общий backend; сайт не заменяет эталон')
                 else:
-                    if site.get('status') == m.SOURCE_UNAVAILABLE:
+                    if site.get('status') == 'not_applicable':
+                        lines.append('ℹ️ Сайта у проекта нет; проверка сайта не применяется')
+                    elif site.get('status') == m.SOURCE_UNAVAILABLE:
                         lines.append(e('⚪ Сайт недоступен: '+site.get('reason','сетевая ошибка')+'; число квартир не проверено'))
                     else:
                         lines.append('⚪ Независимый счётчик квартир сайта не подтверждён')

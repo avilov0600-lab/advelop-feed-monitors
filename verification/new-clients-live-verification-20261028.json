@@ -1,0 +1,113 @@
+{
+  "verified_at_moscow": "2026-10-28T14:59:06+03:00",
+  "server_id": 9007257,
+  "application_root": "/opt/advelop-client-onboarding",
+  "existing_application_files_changed": false,
+  "existing_source_files_verified": 51,
+  "existing_source_verification_reference": "live-source-verification-20261028.json",
+  "new_source_files_verified": 10,
+  "files": [
+    {
+      "path": "/opt/advelop-client-onboarding/publication_control.py",
+      "repository_path": "publication_control.py",
+      "sha256": "d9a122a0fbe8c00bb4b622576e3ca09ddc3226a70b98af54ed5a5371b1f0539e"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/floor_control.py",
+      "repository_path": "floor_control.py",
+      "sha256": "1d7985c92a1e8ffbcc2072a1b5aeeafa1bea7de5a8e62289635d5f429a1b7bf9"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/website_catalogues.py",
+      "repository_path": "website_catalogues.py",
+      "sha256": "f8812a8f671c604a92cafecdf29aef1ec6d4e6ecf45f40b20c7e8e4d62a9ad99"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/clients.json",
+      "repository_path": "developer-feed-monitor/clients.json",
+      "sha256": "c784bca0b34cd476f4542914bb59c6021de92de144285d7d8e2ce212acf2e5e2"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/config.py",
+      "repository_path": "developer-feed-monitor/config.py",
+      "sha256": "aad7c9ef7bee66e4bd8f06cc79122f286d0d0be99d729f59c0d6140b320d39fe"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/monitor.py",
+      "repository_path": "developer-feed-monitor/monitor.py",
+      "sha256": "a01c1c6ad5f6193255eab71e6f1d7995ab8009143c2f043fb341b8d2909a89f2"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/run.py",
+      "repository_path": "developer-feed-monitor/run.py",
+      "sha256": "3f46306bf8654cf9c402a86a095702f610bf604549a4e8d671be4a698d673ac4"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/deploy/relay.py",
+      "repository_path": "developer-feed-monitor/deploy/relay.py",
+      "sha256": "68b0313accd1f84642a2c44fa5a71610fe4e156bcfd764db916b21def54badf2"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/deploy/configure_bot.py",
+      "repository_path": "developer-feed-monitor/deploy/configure_bot.py",
+      "sha256": "bf25197cd4244b7ff2943c13619299fafddfef10273fec5a12941a5b0d678baf"
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/developer-feed-monitor/deploy/resend_latest.py",
+      "repository_path": "developer-feed-monitor/deploy/resend_latest.py",
+      "sha256": "204c8e70273e47dc6097b4eb1fe29624e4b048a9f8ffadec8da6b7c54d92766f"
+    }
+  ],
+  "tests_passed": 206,
+  "schedule_moscow": [
+    "09:00",
+    "13:00",
+    "15:30",
+    "18:30"
+  ],
+  "new_clients": [
+    {
+      "tenant": "donstroy",
+      "intake": "active",
+      "timer": "active",
+      "environment_mode": "0600",
+      "start_subscription_and_reply_verified": true
+    },
+    {
+      "tenant": "kortros",
+      "intake": "active",
+      "timer": "active",
+      "environment_mode": "0600",
+      "start_subscription_and_reply_verified": true
+    },
+    {
+      "tenant": "afi",
+      "intake": "active",
+      "timer": "active",
+      "environment_mode": "0600",
+      "start_subscription_and_reply_verified": true
+    },
+    {
+      "tenant": "apsis",
+      "intake": "active",
+      "timer": "active",
+      "environment_mode": "0600",
+      "start_subscription_and_reply_verified": true
+    },
+    {
+      "tenant": "sovcombank",
+      "intake": "active",
+      "timer": "active",
+      "environment_mode": "0600",
+      "start_subscription_and_reply_verified": true
+    }
+  ],
+  "temporary_credential_copies_removed_from_mac_and_vps": true,
+  "secrets_and_subscriber_identifiers_included": false,
+  "limitations": [
+    "Donstroy and AFI Cian accounts intentionally disabled pending confirmed separate credentials",
+    "AFI maternal feeds missing; Sovcombank source tables missing; GALA independent baseline missing",
+    "Non-API project card URLs missing for most new projects",
+    "Sovcombank publication APIs returned zero in the requested account scope; account mapping needs owner review"
+  ]
+}

@@ -1,6 +1,13 @@
 # ADVelop Feed Monitors
 
-Private source-code repository for eight real-estate feed monitoring bots.
+Source-code repository for real-estate feed monitoring bots.
+
+The `codex/onboard-five-developers` branch adds eleven projects for Donstroy,
+Kortros, AFI, APSIS GLOBE and Sovcombank. These five clients were deployed on
+28 October 2026 into their own application tree and are outside the older
+eight-bot live-source verification below. The installer uses
+a separate `/opt/advelop-client-onboarding` tree and never replaces the eight
+existing bots. The public `main` branch retains the verified production baseline.
 
 ## Snapshot status — 28 October 2026
 
