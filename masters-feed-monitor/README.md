@@ -173,3 +173,16 @@ For operational use, `--refresh-site-availability --output reports/latest.json`
 refreshes only this status in an existing saved report, retaining the original
 feed check time and counts. It does not request XML feeds or marketplace APIs.
 The website row has its own observation time. `/start` still returns saved text.
+
+## Concise report format
+
+Public website reachability appears first: ✅ Сайт доступен or ❌ Сайт недоступен
+with a brief reason. Unknown checks stay explicitly unverified. Counts from the
+client source, website and outbound feeds are grouped; differences in IDs, fields,
+promotional copy and publication remain visible in plain language. Cian and Avito
+publication totals remain scoped to their actual API accounts.
+
+Cian yesterday statistics are displayed only in the morning report (09:00–11:59
+Europe/Moscow, allowing normal execution delay). Other reports retain the saved
+statistics data but omit that presentation block. Parsers, API calls, daily cache,
+subscriptions and the existing schedule are unchanged.

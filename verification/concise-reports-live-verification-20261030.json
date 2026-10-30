@@ -1,0 +1,136 @@
+{
+  "date_moscow": "2026-10-30",
+  "verified_at_moscow": "2026-10-30T14:45+03:00",
+  "method": "Authenticated Timeweb console: exact source SHA-256, saved-report byte comparison, per-client transient job journals; DAR Telegram rendering inspected",
+  "sources": [
+    {
+      "path": "/opt/concise_reports.py",
+      "sha256": "5a1191fb739ffe35bcee8f4ab420467d167373b8d52442cd7c2d5efb8ef9ab3a",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/publication_control.py",
+      "sha256": "32da1c3f76c51450c8e21b392742944eeecb98769c1dcc6b23918e26f222e480",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/concise_reports.py",
+      "sha256": "5a1191fb739ffe35bcee8f4ab420467d167373b8d52442cd7c2d5efb8ef9ab3a",
+      "matches_live": true
+    },
+    {
+      "path": "/opt/advelop-client-onboarding/publication_control.py",
+      "sha256": "a04e2a116b2a191718f5fa39bcce4d13354cbe257a90e30c5e858e9b7543657a",
+      "matches_live": true
+    }
+  ],
+  "clients": [
+    {
+      "tenant": "dar",
+      "before_message_characters": 2200,
+      "after_message_characters": 886,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "ikon",
+      "before_message_characters": 1813,
+      "after_message_characters": 922,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "asterus",
+      "before_message_characters": 2010,
+      "after_message_characters": 1552,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "rodina",
+      "before_message_characters": 1517,
+      "after_message_characters": 885,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "plato",
+      "before_message_characters": 1055,
+      "after_message_characters": 513,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "aston",
+      "before_message_characters": 3503,
+      "after_message_characters": 1957,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "summa",
+      "before_message_characters": 1465,
+      "after_message_characters": 703,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "donstroy",
+      "before_message_characters": 1966,
+      "after_message_characters": 1198,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "kortros",
+      "before_message_characters": 2177,
+      "after_message_characters": 1142,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "afi",
+      "before_message_characters": 2952,
+      "after_message_characters": 2277,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "apsis",
+      "before_message_characters": 991,
+      "after_message_characters": 482,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    },
+    {
+      "tenant": "sovcombank",
+      "before_message_characters": 1826,
+      "after_message_characters": 1000,
+      "report_json_unchanged": true,
+      "cached_message_synchronized": true
+    }
+  ],
+  "intakes_active": 13,
+  "schedule_changed": false,
+  "source_parsers_changed": false,
+  "additional_feed_or_api_requests": false,
+  "statistics_display": "09:00–11:59 Europe/Moscow only; source/cache collection unchanged",
+  "dar_preview": "Initial owner-preview had no configured owner in the monitor environment. Retried with the current Telegram account as a transient recipient; succeeded. No permanent recipient or subscriber changes.",
+  "masters": {
+    "repository": "avilov0600-lab/masters-feed-monitor",
+    "revision": "c9b0a859a4de7a9bf3721d0bd50fb8ebcec11499",
+    "pull_request": 3,
+    "workflow_run": 41050042556,
+    "short_report_rendered": true,
+    "website_header": "✅ Сайт доступен",
+    "subscribers": 6,
+    "delivered": 5,
+    "failed": 1,
+    "note": "Workflow failed on one recipient delivery after the report was successfully rendered and sent to five. No parser or formatting error."
+  },
+  "tests": {
+    "monorepo": 264,
+    "standalone_masters": 81
+  },
+  "runtime_state_or_secrets_included": false
+}

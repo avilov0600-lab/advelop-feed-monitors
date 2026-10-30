@@ -108,6 +108,31 @@ tree uses `a281a8b` plus the patch. Do not overwrite the original developer engi
 with the newer isolated engine. Rollback copies are retained on the VPS.
 MASTERS is deployed separately in its original private GitHub repository.
 
+## Short developer digests — 30 October 2026
+
+`concise_reports.py` is a pure presentation layer for saved results. One message
+covers a developer's projects, with website reachability first: `✅ Сайт доступен`
+or `❌ Сайт недоступен` and a brief reason. Unverified availability stays unknown.
+Lot counts remain visible; matching feeds are grouped and error text is written
+in plain language. Source outages, differing IDs at equal counts, field errors,
+building heights, expired promotions and unavailable publication checks remain
+visible. Cian/Avito counts keep the actual account's project scope. Matching XML
+counts are never presented as independently confirmed marketplace publication.
+
+Cian yesterday statistics appear only in the morning digest (09:00–11:59 Moscow,
+allowing normal runner delay). Data collection and the daily statistics cache are
+unchanged; afternoon/evening messages omit only the presentation block.
+`format_detailed_telegram` preserves the older diagnostic formatter. Both normal
+reports and cached `/start` replies use the short format. The 0/15/30 outage-alert
+proposal is independent and is not enabled by this presentation update.
+
+`scripts/prepare_concise_reports.py` reproduces the source-only patch against the
+two verified VPS application versions. `scripts/deploy_concise_reports.py` checks
+before/after hashes and keeps rollback copies. `scripts/reformat_saved_reports.py`
+can preview or synchronize the latest saved report without downloading sources,
+changing report JSON, or broadcasting to every subscriber. Its owner-preview
+option sends one example to the configured owner only.
+
 ## Credentials and runtime state
 
 No real tokens, private keys, subscriber identifiers, databases, production

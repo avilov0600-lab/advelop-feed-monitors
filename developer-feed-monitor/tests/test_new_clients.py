@@ -95,7 +95,7 @@ class NewClientTests(unittest.TestCase):
                                        '--cache-dir', directory], env=env, cwd=ROOT,
                                       capture_output=True, text=True)
                 self.assertEqual(proc.returncode, 0, proc.stderr)
-                self.assertTrue(proc.stdout.startswith('🔴'))
+                self.assertIn('<b>🔴 ', proc.stdout)
                 self.assertLessEqual(len(proc.stdout.strip().encode('utf-16-le')) // 2, 4096)
                 self.assertIn('Проверено:', proc.stdout)
                 for project in CLIENTS[tenant]['projects'].values():

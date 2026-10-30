@@ -48,7 +48,7 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(report['site_vs_master']['status'],SOURCE_UNAVAILABLE)
         self.assertIsNone(report['site']['lot_count'])
         self.assertEqual(report['feeds']['cian']['lot_count'],1)
-        self.assertIn('Число квартир сайта не подтверждено',format_telegram(report))
+        self.assertIn('Количество квартир на сайте не определено',format_telegram(report))
 
     def test_site_shape_and_pagination_are_validated(self):
         import monitor as module
@@ -70,9 +70,9 @@ class ParserTests(unittest.TestCase):
                   mock.patch.object(module,'_read_marketplace_api_snapshot',return_value=None)):
                 report=module.analyze_directory(Path(directory))
         message=format_telegram(report)
-        self.assertTrue(message.startswith('🔴'))
+        self.assertIn('🔴 МАСТЕРС',message)
         self.assertEqual(message.count('Этажность здания:'),1)
-        self.assertIn('85 → XML 87',message)
+        self.assertIn('в источнике 85, в фиде 87',message)
         self.assertNotIn('ошибки полей: {"floors_total"',message)
     def test_download_retries_network_errors_three_times(self):
         response = mock.MagicMock()
@@ -172,7 +172,7 @@ class ParserTests(unittest.TestCase):
             "platform_cards": {},
         }
         message = format_telegram(report)
-        self.assertIn("SOURCE_UNAVAILABLE — Авито", message)
+        self.assertIn("Фиды недоступны: Авито; доступны 4 из 5, сверка не выполнена", message)
         self.assertIn("доступны 4 из 5", message)
         self.assertNotIn("Авито 0", message)
 
@@ -555,12 +555,12 @@ class ParserTests(unittest.TestCase):
             },
         }
         message = format_telegram(report)
-        self.assertIn("Материнский XML Capital Group (эталон)", message)
-        self.assertIn("✅ Все 5 XML совпадают с эталоном", message)
-        self.assertIn("Сайт (справочно, не эталон)", message)
+        self.assertIn("Источник, сайт и наши 5 фида: по 155 квартир", message)
+        self.assertIn("✅ Состав и параметры фидов совпадают с источником", message)
+        self.assertIn("сайт", message)
         self.assertNotIn("служебный", message)
-        self.assertIn("Площадки — факт размещения (API / карточки ЖК)", message)
-        self.assertIn("✅ М2: 155 предложений = XML 155", message)
+        self.assertIn("М2:", message)
+        self.assertIn("✅ М2: опубликовано 155 — совпадает с фидами", message)
         self.assertNotIn("На сайте, но не в фидах", message)
 
     def test_telegram_reports_cian_avito_apis_and_july_copy(self):
@@ -613,9 +613,9 @@ class ParserTests(unittest.TestCase):
             },
         }
         message = format_telegram(report)
-        self.assertIn("Циан API: опубликовано 155 = XML 155", message)
-        self.assertIn("Авито API: активно 165, XML 155", message)
-        self.assertIn("скидка 10% в июле", message)
+        self.assertIn("Циан (МАСТЕРС): опубликовано 155 — совпадает с фидами", message)
+        self.assertIn("Авито (МАСТЕРС): опубликовано 165, в фидах 155", message)
+        self.assertIn("устаревшая скидка за июль", message)
 
     def test_telegram_uses_master_hierarchy_and_avoids_false_floor_error(self):
         feeds = {
@@ -663,12 +663,12 @@ class ParserTests(unittest.TestCase):
             },
         }
         message = format_telegram(report)
-        self.assertIn("🔴 Домклик: XML 160, остальные XML 165", message)
-        self.assertIn("🔴 Домклик ↔ эталон", message)
+        self.assertIn("🔴 Домклик: в фиде 160, в остальных фидах 165", message)
+        self.assertIn("🔴 Фиды Домклик — не хватает квартир: 5", message)
         self.assertNotIn("этажность различается", message)
-        self.assertIn("Сайт (справочно, не эталон)", message)
+        self.assertIn("сайт", message)
         self.assertNotIn("Сайт ↔ материнский XML, ошибки полей", message)
-        self.assertIn("🔴 Устаревшая фраза", message)
+        self.assertIn("устаревшая скидка за июль", message)
 
 
 if __name__ == "__main__":

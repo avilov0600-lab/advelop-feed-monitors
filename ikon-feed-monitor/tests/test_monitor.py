@@ -171,23 +171,23 @@ class TelegramTests(unittest.TestCase):
         report = self._report()
         self.assertEqual(report["overall_status"], "ok")
         message = monitor.format_telegram(report)
-        self.assertTrue(message.startswith("🟢"))
-        self.assertIn("ЖИЛАЯ НЕДВИЖИМОСТЬ", message)
+        self.assertIn("<b>🟢 IKON DEVELOPMENT</b>", message)
+        self.assertIn("<b>ЖК «Новый Зеленоград»</b>", message)
         self.assertNotIn("КОММЕРЦИЯ", message)
 
     def test_report_has_bold_headings_and_separated_projects(self):
         message = monitor.format_telegram(self._report())
-        self.assertIn("<b>ЖИЛАЯ НЕДВИЖИМОСТЬ</b>\n\n<b>ЖК «Новый Зеленоград»</b>", message)
-        self.assertIn("\n\n<b>ЖК Skolkovo ONE</b>\n<i>Основной источник</i>", message)
+        self.assertIn("\n\n<b>ЖК «Новый Зеленоград»</b>", message)
+        self.assertIn("\n\n<b>ЖК Skolkovo ONE</b>\nКвартиры: источник", message)
         self.assertNotIn("<b>КОММЕРЦИЯ</b>", message)
-        self.assertEqual(message.count("Даты и месяцы акций: замечаний нет"), 2)
+        self.assertNotIn("Даты и месяцы акций: замечаний нет", message)
 
     def test_api_totals_show_cabinet_feed_counts_and_project_scope(self):
         report = self._report()
         message = monitor.format_telegram(report)
-        self.assertIn("<i>Площадки — факт размещения по API</i>", message)
-        self.assertIn("✅ Циан API (ЖК «Новый Зеленоград», ЖК Skolkovo ONE): всего в кабинете 2, наши XML 2; разница +0", message)
-        self.assertIn("✅ Авито API (ЖК «Новый Зеленоград»): всего в кабинете 1, наши XML 1; разница +0", message)
+        self.assertIn("<b>Площадки — по API</b>", message)
+        self.assertIn("✅ Циан (ЖК «Новый Зеленоград», ЖК Skolkovo ONE): опубликовано 2 — совпадает с фидами.", message)
+        self.assertIn("✅ Авито (ЖК «Новый Зеленоград»): опубликовано 1 — совпадает с фидами.", message)
         self.assertNotIn("аккаунт подтверждён", message)
         compact = monitor._format_compact_telegram(report)
         self.assertIn("Циан · оба ЖК: в кабинете — 2, в фидах — 2", compact)
@@ -205,7 +205,7 @@ class TelegramTests(unittest.TestCase):
         self.assertNotIn("аккаунт подтверждён", message)
         self.assertNotIn("карточка не показывает", message)
         self.assertNotIn("<i>Площадки проекта</i>", message)
-        self.assertIn("Циан API (ЖК «Новый Зеленоград», ЖК Skolkovo ONE): всего в кабинете 2, наши XML 2", message)
+        self.assertIn("Циан (ЖК «Новый Зеленоград», ЖК Skolkovo ONE): опубликовано 2 — совпадает с фидами.", message)
 
     def test_actual_project_card_difference_remains_visible(self):
         category = self._report()["categories"]["residential"]
@@ -303,7 +303,7 @@ class TelegramTests(unittest.TestCase):
                     value["missing_from_feed"] = ["very-long-id-" + ("x" * 500)] * 50
         message = monitor.format_telegram(report)
         self.assertLessEqual(len(message), monitor.MAX_TELEGRAM_MESSAGE)
-        self.assertIn("ЖИЛАЯ НЕДВИЖИМОСТЬ", message)
+        self.assertIn("<b>ЖК «Новый Зеленоград»</b>", message)
         self.assertNotIn("КОММЕРЦИЯ", message)
         self.assertIn("Проверено:", message)
         self.assertIn("\n\n<b>ЖК Skolkovo ONE</b>", message)
