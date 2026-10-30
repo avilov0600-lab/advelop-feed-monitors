@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "tenants": {
+    "masters": {
+      "name": "МАСТЕРС",
+      "username": "advelopmastersbot",
+      "sites": [
+        {
+          "url": "https://cg-projects.ru/flats?project=masters&completion=2029-4",
+          "projects": [
+            "МАСТЕРС"
+          ]
+        }
+      ]
+    },
+    "dar": {
+      "name": "DAR",
+      "username": "advelop_dar_bot",
+      "sites": [
+        {
+          "url": "https://ddoomm.moscow/apartments",
+          "projects": [
+            "Дом на Часовой"
+          ]
+        },
+        {
+          "url": "https://rakurs.moscow/",
+          "projects": [
+            "ЖК «Ракурс»"
+          ]
+        }
+      ]
+    },
+    "ikon": {
+      "name": "IKON DEVELOPMENT",
+      "username": "advelop_ikon_bot",
+      "sites": [
+        {
+          "url": "https://newzelenograd.ru/",
+          "projects": [
+            "ЖК «Новый Зеленоград»"
+          ]
+        },
+        {
+          "url": "https://skolkovoone.ru/",
+          "projects": [
+            "ЖК Skolkovo ONE"
+          ]
+        }
+      ]
+    },
+    "asterus": {
+      "name": "Asterus",
+      "username": "advelop_asterus_bot",
+      "sites": [
+        {
+          "url": "https://alia.moscow/",
+          "projects": [
+            "Алиа"
+          ]
+        }
+      ]
+    },
+    "rodina": {
+      "name": "Родина",
+      "username": "advelop_rodina_bot",
+      "sites": [
+        {
+          "url": "https://xn--g1ani7c.xn--80adxhks/",
+          "projects": [
+            "Союз"
+          ]
+        },
+        {
+          "url": "https://rodina-peredelkino.ru/",
+          "projects": [
+            "Переделкино"
+          ]
+        }
+      ]
+    },
+    "plato": {
+      "name": "Плато Девелопмент",
+      "username": "advelop_plato_kutuzov_bot",
+      "sites": [
+        {
+          "url": "https://kutuzov-city.ru/",
+          "projects": [
+            "Кутузов Сити"
+          ]
+        }
+      ]
+    },
+    "aston": {
+      "name": "Астон",
+      "username": "advelop_aston_bot",
+      "sites": [
+        {
+          "url": "https://astondom.ru/vdk",
+          "projects": [
+            "Астон. А зори здесь тихие"
+          ]
+        },
+        {
+          "url": "https://astondom.ru/nsk",
+          "projects": [
+            "Шесть Звезд"
+          ]
+        },
+        {
+          "url": "https://astondom.ru/ekb",
+          "projects": [
+            "Движение"
+          ]
+        },
+        {
+          "url": "https://astondom.ru/ekb",
+          "projects": [
+            "Движение вверх"
+          ]
+        }
+      ]
+    },
+    "summa": {
+      "name": "DomDau",
+      "username": "advelop_summa_bot",
+      "sites": [
+        {
+          "url": "https://domdau.moscow/",
+          "projects": [
+            "Дом Дау"
+          ]
+        }
+      ]
+    },
+    "donstroy": {
+      "name": "Донстрой",
+      "username": "advelop_donstroy_bot",
+      "sites": [
+        {
+          "url": "https://donstroy.moscow/objects/reka/",
+          "projects": [
+            "Река"
+          ]
+        },
+        {
+          "url": "https://donstroy.moscow/objects/ostrov/",
+          "projects": [
+            "Остров"
+          ]
+        },
+        {
+          "url": "https://donstroy.moscow/objects/tatarskaya-35/",
+          "projects": [
+            "Татарская"
+          ]
+        }
+      ]
+    },
+    "kortros": {
+      "name": "Кортрос",
+      "username": "advelop_kortros_bot",
+      "sites": [
+        {
+          "url": "https://kortros.ru/projects/secretgarden",
+          "projects": [
+            "Secret Garden"
+          ]
+        },
+        {
+          "url": "https://kgd.kortros.ru/projects/octarin",
+          "projects": [
+            "Октарин"
+          ]
+        }
+      ]
+    },
+    "afi": {
+      "name": "AFI",
+      "username": "advelop_afi_bot",
+      "sites": [
+        {
+          "url": "https://afi-park.ru/",
+          "projects": [
+            "Сиреневый парк"
+          ]
+        },
+        {
+          "url": "https://odinburg.ru/",
+          "projects": [
+            "Одинбург"
+          ]
+        },
+        {
+          "url": "https://afitower.ru/",
+          "projects": [
+            "AFI Tower"
+          ]
+        }
+      ]
+    },
+    "apsis": {
+      "name": "APSIS GLOBE",
+      "username": "advelop_apsis_bot",
+      "sites": [
+        {
+          "url": "https://galaresidence.ru/",
+          "projects": [
+            "ГАЛА"
+          ]
+        }
+      ]
+    },
+    "sovcombank": {
+      "name": "Совкомбанк",
+      "username": "advelop_sovcombank_bot",
+      "sites": []
+    }
+  }
+}

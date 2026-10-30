@@ -1,0 +1,29 @@
+{
+  "verified_at_moscow": "2026-10-30T16:32:51+03:00",
+  "verification_method": "Authorized Timeweb web console; exact SHA-256 comparison of all three installed files; systemctl state; own state database aggregates; Telegram examples confirmed in owner chat UI",
+  "service": "advelop-site-watch.service",
+  "service_active": true,
+  "service_enabled": true,
+  "configured_tenants": 13,
+  "clients_with_website_urls": 12,
+  "unique_tenant_urls": 22,
+  "sites_checked": 22,
+  "confirmed_incidents": 0,
+  "pending_alerts": 0,
+  "active_intake_services": 13,
+  "subscriber_databases_opened_read_only": true,
+  "existing_monitor_code_or_schedules_changed": false,
+  "offline_test_total": 289,
+  "live_deliberate_outage_injected": false,
+  "owner_only_test_examples_delivered": 2,
+  "files": {
+    "/opt/advelop-site-watch/watch.py": "a8790d766f8661334a59603aa06c82044c3e9d1e0067327096303d41cecff3e0",
+    "/etc/advelop-site-watch/sites.json": "0824adedfbfd1f84913ca0f84659ccc53171a7d1ae689c9e71ee165de2f7c14e",
+    "/etc/systemd/system/advelop-site-watch.service": "24415a53bc32739062f6220d75628773ebb6e60f47d9aa37e8d58961c1b9518e"
+  },
+  "limitations": [
+    "Sovcombank has no configured website URL",
+    "HTTP availability is measured from the Timeweb server",
+    "Confirmation timing and recovery delivery covered by offline tests; no forced production outage"
+  ]
+}

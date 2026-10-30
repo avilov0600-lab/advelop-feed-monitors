@@ -123,8 +123,24 @@ Cian yesterday statistics appear only in the morning digest (09:00–11:59 Mosco
 allowing normal runner delay). Data collection and the daily statistics cache are
 unchanged; afternoon/evening messages omit only the presentation block.
 `format_detailed_telegram` preserves the older diagnostic formatter. Both normal
-reports and cached `/start` replies use the short format. The 0/15/30 outage-alert
-proposal is independent and is not enabled by this presentation update.
+reports and cached `/start` replies use the short format.
+
+## Website outage notifications (enabled 30 October 2026)
+
+[`site-watch/`](site-watch/README.md) is a separate Timeweb service for the 22
+configured website URLs across 12 clients (all 13 bots are configured; Sovcombank
+has no website URL yet). A failed normal-report check starts an incident, with
+follow-up HTTP checks after 15 and 30 minutes. Three failed rounds trigger a
+private notification to that client's active subscribers. Recovery before
+confirmation stays quiet; recovery after notification sends a single recovery
+notice to the recipients still subscribed. The service persists incident state
+and delivery retries independently of existing `/start` consumers and schedules.
+
+Normal observations come from existing saved reports. If a report is delayed,
+four fallback website checks run ten minutes after the regular report slots.
+There are no extra AI, GitHub or marketplace API calls. Bot credentials remain
+on the VPS; subscriber databases are read-only. See the component README for
+installation, limitations, paths and operational checks.
 
 `scripts/prepare_concise_reports.py` reproduces the source-only patch against the
 two verified VPS application versions. `scripts/deploy_concise_reports.py` checks
