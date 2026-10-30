@@ -1,0 +1,28 @@
+[Unit]
+Description=ADVelop website availability confirmation and subscriber alerts
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+Environment=PYTHONPATH=/opt:/opt/advelop-command-intake
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStartPre=/usr/bin/python3 /opt/advelop-site-watch/watch.py --config /etc/advelop-site-watch/sites.json --preflight
+ExecStart=/usr/bin/python3 /opt/advelop-site-watch/watch.py --config /etc/advelop-site-watch/sites.json --state /var/lib/advelop-site-watch/state.sqlite3
+Restart=always
+RestartSec=10
+TimeoutStopSec=180
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/advelop-site-watch /var/lib/advelop-telegram-relay /var/lib/dar-telegram-relay /var/lib/asterus-feed-monitor /var/lib/rodina-feed-monitor /var/lib/plato-feed-monitor /var/lib/aston-feed-monitor /var/lib/summa-feed-monitor /var/lib/donstroy-feed-monitor /var/lib/kortros-feed-monitor /var/lib/afi-feed-monitor /var/lib/apsis-feed-monitor /var/lib/sovcombank-feed-monitor
+# SQLite may create/update WAL shared-memory coordination files; databases remain OS-read-only.
+ReadOnlyPaths=/var/lib/advelop-telegram-relay/relay.sqlite3 /var/lib/dar-telegram-relay/relay.sqlite3 /var/lib/asterus-feed-monitor/subscribers.sqlite3 /var/lib/rodina-feed-monitor/subscribers.sqlite3 /var/lib/plato-feed-monitor/subscribers.sqlite3 /var/lib/aston-feed-monitor/subscribers.sqlite3 /var/lib/summa-feed-monitor/subscribers.sqlite3 /var/lib/donstroy-feed-monitor/subscribers.sqlite3 /var/lib/kortros-feed-monitor/subscribers.sqlite3 /var/lib/afi-feed-monitor/subscribers.sqlite3 /var/lib/apsis-feed-monitor/subscribers.sqlite3 /var/lib/sovcombank-feed-monitor/subscribers.sqlite3
+
+[Install]
+WantedBy=multi-user.target
