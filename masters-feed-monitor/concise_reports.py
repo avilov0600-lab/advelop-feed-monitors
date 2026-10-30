@@ -333,6 +333,7 @@ def statistics_lines(accounts, labels, projects):
 def render_report(report, client_name, projects, labels, *, field_labels=None, data=None,
                   html_mode=True, include_statistics=None):
     """Render one developer digest, all projects included, with no network calls."""
+    labels = {'yandex_realty': 'Яндекс Недвижимость', **labels}
     escape = (lambda text: html.escape(str(text), quote=False)) if html_mode else str
     bold = (lambda text: '<b>' + escape(text) + '</b>') if html_mode else str
     lines = [escape(line) for line in website_header(report, projects)]

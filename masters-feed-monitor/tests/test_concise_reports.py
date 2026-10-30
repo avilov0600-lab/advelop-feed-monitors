@@ -47,6 +47,14 @@ class ConciseReportTests(unittest.TestCase):
         self.assertNotIn('✅ Сайт доступен', text)
         self.assertNotIn('❌ Сайт недоступен', text)
 
+    def test_legacy_yandex_card_key_is_shown_as_a_human_name(self):
+        report = fixture()
+        report['categories']['residential']['platform_cards']['p'] = {
+            'yandex_realty': {'status': 'ok', 'offer_count': 50, 'feed_count': 50}}
+        text = self.render(report)
+        self.assertIn('Яндекс Недвижимость: опубликовано 50', text)
+        self.assertNotIn('yandex_realty', text)
+
     def test_morning_only_uses_aware_moscow_time_not_host_clock(self):
         for stamp, expected in [('2026-10-30T06:01:00Z', True), ('2026-10-30T08:59:00+03:00', False),
                                 ('2026-10-30T11:59:00+03:00', True), ('2026-10-30T13:00:00+03:00', False),

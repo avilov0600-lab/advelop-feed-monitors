@@ -129,8 +129,19 @@
     "note": "Workflow failed on one recipient delivery after the report was successfully rendered and sent to five. No parser or formatting error."
   },
   "tests": {
-    "monorepo": 264,
-    "standalone_masters": 81
+    "monorepo": 266,
+    "standalone_masters": 82
   },
-  "runtime_state_or_secrets_included": false
+  "runtime_state_or_secrets_included": false,
+  "followup_readable_platform_labels": {
+    "date_moscow": "2026-10-30",
+    "module_sha256": "5889880d7963639fab4056335b01ce9db16138b4828d0e0b1b7297809907a5e0",
+    "live_paths": [
+      "/opt/concise_reports.py",
+      "/opt/advelop-client-onboarding/concise_reports.py"
+    ],
+    "both_paths_verified": true,
+    "masters_revision": "72db886e823f640c5c3073d839906a97c69518f7",
+    "purpose": "Display the legacy yandex_realty card key as Яндекс Недвижимость"
+  }
 }
