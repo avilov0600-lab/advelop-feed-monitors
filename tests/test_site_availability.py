@@ -195,14 +195,14 @@ class ReportAvailabilityTests(unittest.TestCase):
                   'site_availability': {'p': {'status': 'available', 'status_code': 200}},
                   'categories': {'r': {'projects': {'p': project}, 'api_checks': {}, 'platform_cards': {}}}}
         text = m.format_telegram(report)
-        self.assertTrue(text.startswith('🟢'))
-        self.assertIn('✅ Сайт отвечает (HTTP 200)', text)
-        self.assertIn('Число квартир сайта не подтверждено', text)
+        self.assertIn('<b>🟢 Клиент</b>', text)
+        self.assertTrue(text.startswith('✅ Сайт доступен'))
+        self.assertIn('Количество квартир на сайте не определено', text)
         self.assertNotIn('Сайт недоступен', text)
         report['site_availability']['p'] = {'status': 'unavailable', 'reason': 'Ошибка DNS'}
         text = m.format_telegram(report)
-        self.assertTrue(text.startswith('🟢'))
-        self.assertIn('🔴 Сайт недоступен: Ошибка DNS', text)
+        self.assertIn('<b>🟢 Клиент</b>', text)
+        self.assertTrue(text.startswith('❌ Сайт недоступен — не найден адрес сайта'))
 
     def test_masters_standalone_copies_match_shared_modules(self):
         root = Path(__file__).resolve().parents[1]

@@ -43,4 +43,6 @@ def install(m):
     m.download_marketplace_api_snapshots=snapshots
     m.compare_master_to_feeds=compare
     m.analyze_directory=analyze
-    m.format_telegram=render
+    m.format_detailed_telegram=render
+    from concise_reports import render_masters
+    m.format_telegram=lambda report: render_masters(report, m)

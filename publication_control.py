@@ -429,4 +429,8 @@ def install(m, client_name):
     m._card_has_error=lambda results:any(c.get('status')!='ok' for cards in results.values() for c in cards.values())
     m.download_sources=download
     m.analyze_directory=analyze
-    m.format_telegram=render
+    m.format_detailed_telegram=render
+    from concise_reports import render_report
+    m.format_telegram=lambda report: render_report(
+        report, client_name, m.PROJECTS, m.FEED_LABELS,
+        field_labels=getattr(m, 'FIELD_LABELS', {}), data=getattr(m, 'DATA', {}))

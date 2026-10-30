@@ -35,13 +35,13 @@ class PublicationTests(unittest.TestCase):
         install(m,'test')
         message=m.format_telegram(report)
         self.assertEqual(message.count('Этажность здания:'),1)
-        self.assertIn('85 → XML 87',message)
+        self.assertIn('в источнике 85, в фиде 87',message)
         self.assertNotIn('ошибок полей 281',message)
-        self.assertTrue(message.startswith('🔴'))
+        self.assertIn('<b>🔴 test</b>',message)
         comparison['field_mismatch_counts']['floor']=2
         message=m.format_telegram(report)
-        self.assertIn('ошибок полей 2',message)
-        self.assertIn('этаж квартиры 2',message)
+        self.assertIn('Этаж квартиры: с источником — 2',message)
+        self.assertIn('Этаж квартиры:',message)
     def test_yandex_real_project_wording(self):
         page='<title>ЖК «РАКУРС» от застройщика Dar — 130 квартир по цене от 19 млн</title><p>Общее число корпусов 4, в настоящий момент продажи 130 квартир открыты в 3 корпусах</p>'
         self.assertEqual(extract_count('yandex',page),130)

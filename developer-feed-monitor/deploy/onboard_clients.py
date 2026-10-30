@@ -25,7 +25,7 @@ TRANSPORT = Path('/opt/advelop-command-intake/transport.py')
 
 def source_files():
     names = ['publication_control.py', 'floor_control.py', 'website_catalogues.py',
-             'site_availability.py', 'site_availability_integration.py']
+             'site_availability.py', 'site_availability_integration.py', 'concise_reports.py']
     names += ['developer-feed-monitor/' + n for n in (
         'clients.json', 'config.py', 'monitor.py', 'run.py', 'deploy/relay.py',
         'deploy/configure_bot.py', 'deploy/resend_latest.py')]
