@@ -45,6 +45,7 @@ def render(report, previous=None):
                   f'({pct(t["calls"], t["calls_plan_date"])}); план месяца — {amount(t["calls_plan"])}.',
                   f'Бюджет к дате: план {amount(t["budget_plan_date"], True)}, '
                   f'факт ДБ {amount(t["spend"], True)} ({pct(t["spend"], t["budget_plan_date"])}).']
+        lines.append(f'Бюджет месяца: {amount(t["budget_plan"], True)}. Валовые звонки по ДБ: {amount(t["gross"])}.')
         if not db['calls_verified'] or not db['spend_verified']:
             parts = []
             if not db['calls_verified']:
@@ -126,4 +127,5 @@ def render(report, previous=None):
     else:
         lines.append('Журнал создан в ДБ; автоматическое чтение ожидает подключения доступа.')
     lines.append('Ставки и тарифы автоматически не меняются.')
+    lines.append('<i>Платные звонки и списания API ещё не сверены с ДБ; конверсия в целевые не рассчитана.</i>')
     return '\n'.join(lines)

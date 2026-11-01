@@ -1,15 +1,27 @@
 import datetime as dt
 import sqlite3
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
-from dashboard import HEADERS, parse_month, parse_actions
+from dashboard import HEADERS, parse_month, parse_actions, public_range, number
 from providers import avito_metrics, cian_auction, SourceError
 from render import render, delta_auction
 from run import send_once
 
 
 class DashboardTests(unittest.TestCase):
+    def test_csv_preserves_first_data_row_and_localized_money(self):
+        response = Mock()
+        response.headers = {'Content-Type': 'text/csv; charset=utf-8'}
+        response.read.return_value = '"Вчера","01.11.2026"\n'.encode()
+        context = Mock()
+        context.__enter__ = Mock(return_value=response)
+        context.__exit__ = Mock(return_value=False)
+        with patch('dashboard.urllib.request.urlopen', return_value=context):
+            self.assertEqual(public_range(123, 'D6:E6'), [['Вчера', '01.11.2026']])
+        self.assertEqual(number('12\u00a0494\u00a0508,01 ₽'), 12494508.01)
+        self.assertIsNone(number('—'))
+
     def fixture(self, shift=0):
         header = ['Источник', 'Разбивка', 'Место', 'Формат'] + [''] * shift + list(HEADERS.values())
         rows = [['Вчера', 46327], header, ['Базы недвижимости', '', '', ''] + [''] * shift + [75, 2, 0, 1200, 40, 0, 0],

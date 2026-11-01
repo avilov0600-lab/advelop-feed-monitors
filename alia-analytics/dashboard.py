@@ -134,10 +134,8 @@ def public_range(gid, cell_range):
     if len(raw) > 2 * 1024 * 1024:
         raise ValueError('Ответ Google превышает размер выбранного диапазона')
     rows = list(csv.reader(io.StringIO(raw.decode('utf-8-sig'))))
-    # Visualization CSV always has a column-label row, even with headers=0.
-    if not rows or any(rows[0]):
-        raise ValueError('Изменилась структура CSV Google')
-    return rows[1:]
+    # headers=0 returns data rows directly; the first row is not a service header.
+    return rows
 
 
 def collect_public(yesterday):
