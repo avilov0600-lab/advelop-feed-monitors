@@ -1,0 +1,11 @@
+[Unit]
+Description=ALIA analytics at 11:30 Moscow daily
+
+[Timer]
+OnCalendar=*-*-* 11:30:00 Europe/Moscow
+AccuracySec=30s
+Persistent=true
+Unit=alia-analytics.service
+
+[Install]
+WantedBy=timers.target

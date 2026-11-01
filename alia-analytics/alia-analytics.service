@@ -1,0 +1,23 @@
+[Unit]
+Description=ALIA daily real-estate analytics (separate from feed monitor)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+WorkingDirectory=/opt/alia-analytics
+ExecStart=/opt/alia-analytics/.venv/bin/python /opt/alia-analytics/run.py --send
+TimeoutStartSec=8min
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/alia-analytics
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
