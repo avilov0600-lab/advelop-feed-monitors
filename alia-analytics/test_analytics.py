@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import Mock
 
 from dashboard import HEADERS, parse_month, parse_actions
-from providers import avito_metrics, SourceError
+from providers import avito_metrics, cian_auction, SourceError
 from render import render, delta_auction
 from run import send_once
 
@@ -70,6 +70,19 @@ class ApiTests(unittest.TestCase):
         a = {'status': 'ok', 'items': [{'offerId': 1, 'currentBet': 11, 'page': 1, 'position': 2}]}
         b = {'status': 'ok', 'items': [{'offerId': 2, 'currentBet': 20, 'page': 1, 'position': 2}]}
         self.assertIsNone(delta_auction(a, b))
+
+    def test_bad_lot_does_not_discard_remaining_auction_rows(self):
+        api = Mock()
+        def call(path, query, **kwargs):
+            ids = query['offerIds']
+            if 2 in ids:
+                raise SourceError('API HTTP 500')
+            return {'result': {'items': [{'offerId': i, 'page': 1, 'position': i} for i in ids]}}
+        api.call.side_effect = call
+        result = cian_auction(api, [1, 2, 3])
+        self.assertEqual(result['status'], 'partial')
+        self.assertEqual(result['covered'], 2)
+        self.assertEqual({x['offerId'] for x in result['items']}, {1, 3})
 
 
 class DeliveryTests(unittest.TestCase):

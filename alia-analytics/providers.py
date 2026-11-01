@@ -18,7 +18,7 @@ class API:
         self.last = 0
         self.requests = 0
 
-    def call(self, path, *, query=None, data=None, form=False):
+    def call(self, path, *, query=None, data=None, form=False, attempts=3, timeout=18):
         url = self.base + path
         if query:
             url += '?' + urllib.parse.urlencode(query, doseq=True)
@@ -29,23 +29,23 @@ class API:
         if data is not None:
             headers['Content-Type'] = ('application/x-www-form-urlencoded' if form else 'application/json')
             body = (urllib.parse.urlencode(data) if form else json.dumps(data)).encode()
-        for attempt in range(3):
+        for attempt in range(attempts):
             time.sleep(max(0, self.last + self.interval - time.monotonic()))
             self.last = time.monotonic()
             self.requests += 1
             try:
                 req = urllib.request.Request(url, headers=headers, data=body)
-                with urllib.request.urlopen(req, timeout=18) as response:
+                with urllib.request.urlopen(req, timeout=timeout) as response:
                     raw = response.read(8 * 1024 * 1024 + 1)
                 if len(raw) > 8 * 1024 * 1024:
                     raise SourceError('ответ API слишком большой')
                 return json.loads(raw)
             except urllib.error.HTTPError as error:
-                if error.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                if error.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
                     raise SourceError('API HTTP ' + str(error.code)) from None
                 time.sleep(min(10, 2 ** (attempt + 1)))
             except (OSError, ValueError):
-                if attempt == 2:
+                if attempt == attempts - 1:
                     raise SourceError('API временно недоступен') from None
                 time.sleep(2)
 
@@ -72,12 +72,29 @@ def cian_inventory(api):
 
 def cian_auction(api, ids):
     items = {}
-    for offset in range(0, len(ids), 40):
-        for row in api.call('/v1/get-auction', query={'offerIds': ids[offset:offset + 40]})['result']['items']:
+    deadline = time.monotonic() + 120
+
+    def fetch(batch):
+        if time.monotonic() >= deadline:
+            return
+        try:
+            rows = api.call('/v1/get-auction', query={'offerIds': batch}, attempts=1,
+                            timeout=min(8, max(1, deadline - time.monotonic())))['result']['items']
+        except SourceError as error:
+            if str(error).endswith(('401', '403', '429')):
+                raise
+            if len(batch) > 1:
+                middle = len(batch) // 2
+                fetch(batch[:middle])
+                fetch(batch[middle:])
+            return
+        for row in rows:
             ident = int(row['offerId'])
-            if ident not in ids or ident in items:
+            if ident not in batch or ident in items:
                 raise SourceError('неоднозначный список аукциона')
             items[ident] = {k: row.get(k) for k in ('offerId', 'currentBet', 'leaderBet', 'page', 'position')}
+    for offset in range(0, len(ids), 20):
+        fetch(ids[offset:offset + 20])
     return {'status': 'ok' if len(items) == len(ids) else 'partial', 'total': len(ids),
             'covered': len(items), 'items': list(items.values())}
 

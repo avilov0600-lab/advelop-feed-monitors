@@ -1,5 +1,7 @@
 """Read only the ALIA real-estate-bases block and the explicit action journal."""
 import datetime as dt
+import csv
+import io
 import json
 import re
 import urllib.parse
@@ -14,6 +16,11 @@ HEADERS = {
     'calls': 'Звонки Факт на вчера', 'budget_plan': 'Бюджет План на месяц',
     'budget_plan_date': 'Бюджет План на вчера', 'spend': 'Бюджет Факт на вчера',
     'gross': 'ВАЛ',
+}
+# Explicit, reviewed source bounds. A new month must not silently read another tab.
+PUBLIC_MONTHS = {
+    '2026-11': {'gid': 1133548286, 'title': 'ДБ - Ноябрь 2026 ',
+                'header': 'A10:BL10', 'body': 'A15:BL23', 'date': 'D6:E6'},
 }
 
 
@@ -37,6 +44,10 @@ def number(value):
         return None
     if isinstance(value, (int, float)):
         return value if value >= 0 else None
+    if isinstance(value, str):
+        cleaned = re.sub(r'[\s\u00a0\u202f₽]', '', value).replace(',', '.')
+        if re.fullmatch(r'\d+(?:\.\d+)?', cleaned):
+            return float(cleaned)
     return None  # A dash, formula error, empty cell and text are not zero.
 
 
@@ -113,9 +124,47 @@ def parse_actions(rows, yesterday):
     return sorted(actions, key=lambda a: a['date'], reverse=True)
 
 
+def public_range(gid, cell_range):
+    query = urllib.parse.urlencode({'gid': gid, 'range': cell_range, 'headers': 0, 'tqx': 'out:csv'})
+    request = urllib.request.Request(f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?{query}')
+    with urllib.request.urlopen(request, timeout=20) as response:
+        if 'csv' not in response.headers.get('Content-Type', ''):
+            raise ValueError('Google не вернул CSV выбранного диапазона')
+        raw = response.read(2 * 1024 * 1024 + 1)
+    if len(raw) > 2 * 1024 * 1024:
+        raise ValueError('Ответ Google превышает размер выбранного диапазона')
+    rows = list(csv.reader(io.StringIO(raw.decode('utf-8-sig'))))
+    # Visualization CSV always has a column-label row, even with headers=0.
+    if not rows or any(rows[0]):
+        raise ValueError('Изменилась структура CSV Google')
+    return rows[1:]
+
+
+def collect_public(yesterday):
+    cfg = PUBLIC_MONTHS.get(yesterday.strftime('%Y-%m'))
+    if not cfg:
+        return {'status': 'unavailable', 'reason': 'нужны диапазоны Базы недвижимости для нового месяца ДБ'}
+    try:
+        date_rows = public_range(cfg['gid'], cfg['date'])
+        headings = public_range(cfg['gid'], cfg['header'])
+        body = public_range(cfg['gid'], cfg['body'])
+        meta = public_range(20261102, 'A2:J2')
+        actions = public_range(20261102, 'A5:J205')
+        journal = [[], meta[0] if meta else [], [], []] + actions
+        if len(date_rows) != 1 or len(headings) != 1 or len(body) != 9:
+            raise ValueError('Изменилась структура CSV Google')
+        rows = date_rows + headings + body
+        report = parse_month(rows, month=cfg['title'], yesterday=yesterday, journal_rows=journal)
+        report['access'] = 'existing_link_scoped_csv'
+        return report
+    except Exception as error:
+        return {'status': 'unavailable', 'reason':
+                str(error) if isinstance(error, ValueError) else 'не удалось прочитать выбранные диапазоны ДБ'}
+
+
 def collect(credentials_path, yesterday):
     if not credentials_path or not Path(credentials_path).is_file():
-        return {'status': 'unavailable', 'reason': 'не подключён служебный доступ к ДБ'}
+        return collect_public(yesterday)
     try:
         from google.oauth2 import service_account
         from google.auth.transport.requests import Request
