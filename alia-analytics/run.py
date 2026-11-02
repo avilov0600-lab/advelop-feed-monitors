@@ -43,6 +43,13 @@ def subscribers(path):
             'SELECT chat_id FROM subscribers WHERE tenant=? AND active=1', ('asterus',))})
 
 
+def owner_recipient(env, explicit_chat, active):
+    chat = str(explicit_chat or env.get('TELEGRAM_CHAT_ID') or '')
+    if not chat.isdigit() or chat not in active:
+        raise ValueError('An active owner chat is required for the preview')
+    return chat
+
+
 def send_once(db, *, key, chat, text, telegram):
     """Persist the claim before sending. An ambiguous timeout requires manual review."""
     prior = db.execute('SELECT status FROM deliveries WHERE run_key=? AND chat=?', (key, chat)).fetchone()
@@ -74,6 +81,7 @@ def main():
     parser.add_argument('--transport-dir', default='/opt/advelop-command-intake')
     parser.add_argument('--send', action='store_true')
     parser.add_argument('--owner-only', action='store_true')
+    parser.add_argument('--owner-chat-id', help='Explicit active subscriber for the owner preview only')
     parser.add_argument('--refresh', action='store_true', help='Refresh draft; does not re-send a delivered day')
     args = parser.parse_args()
     os.umask(0o077)
@@ -91,7 +99,10 @@ def main():
         path = root / (day.isoformat() + suffix + '.json')
         text_path = root / (day.isoformat() + suffix + '.html')
         env = environment(args.env_file)
-        if args.refresh or suffix or not path.exists():
+        owner = (owner_recipient(env, args.owner_chat_id, subscribers(args.subscribers))
+                 if args.send and args.owner_only else None)
+        preview_fresh = args.owner_only and path.exists() and now.timestamp() - path.stat().st_mtime < 900
+        if args.refresh or (suffix and not preview_fresh) or not path.exists():
             old_path = root / ((day - dt.timedelta(days=1)).isoformat() + '.json')
             old = json.loads(old_path.read_text()) if old_path.exists() else None
             report = {'date': day.isoformat(), 'observed_at': now.strftime('%d.%m %H:%M МСК'),
@@ -117,7 +128,7 @@ def main():
         telegram = Telegram(env['TELEGRAM_BOT_TOKEN'])
         if telegram.call('getMe').get('username') != 'advelop_asterus_bot':
             raise ValueError('Bot identity mismatch; nothing sent')
-        chats = [env['TELEGRAM_CHAT_ID']] if args.owner_only else subscribers(args.subscribers)
+        chats = [owner] if args.owner_only else subscribers(args.subscribers)
         with sqlite3.connect(root / 'delivery.sqlite3', timeout=10) as outbox:
             outbox.execute('CREATE TABLE IF NOT EXISTS deliveries '
                            '(run_key TEXT,chat TEXT,status TEXT,body_hash TEXT,message_id INTEGER,'

@@ -55,7 +55,9 @@ OAuth scope `spreadsheets.readonly`. Не открывать таблицу пу
 
 1. Проверить исходники, затем `sh install.sh` от root в каталоге компонента.
 2. `.../.venv/bin/python /opt/alia-analytics/run.py` — сбор и текст без рассылки.
-3. `.../.venv/bin/python /opt/alia-analytics/run.py --send --owner-only` — владельцу.
+3. `.../.venv/bin/python /opt/alia-analytics/run.py --send --owner-only --owner-chat-id <ID>` — владельцу.
+   ID должен быть проверенным активным подписчиком этого бота; произвольный первый
+   подписчик никогда не выбирается. Нужный ID не хранится в исходниках.
 4. `systemctl enable --now alia-analytics.timer` после проверки результата.
 5. `systemctl list-timers alia-analytics.timer developer-feed-monitor@asterus.timer`.
 

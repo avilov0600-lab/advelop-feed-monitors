@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 from dashboard import HEADERS, parse_month, parse_actions, public_range, number
 from providers import avito_metrics, cian_auction, SourceError
 from render import render, delta_auction
-from run import send_once
+from run import send_once, owner_recipient
 
 
 class DashboardTests(unittest.TestCase):
@@ -99,6 +99,13 @@ class ApiTests(unittest.TestCase):
 
 
 class DeliveryTests(unittest.TestCase):
+    def test_owner_preview_uses_explicit_active_recipient_not_arbitrary_subscriber(self):
+        self.assertEqual(owner_recipient({}, '42', ['42', '84']), '42')
+        with self.assertRaises(ValueError):
+            owner_recipient({}, None, ['42', '84'])
+        with self.assertRaises(ValueError):
+            owner_recipient({}, '99', ['42', '84'])
+
     def database(self):
         db = sqlite3.connect(':memory:')
         db.execute('CREATE TABLE deliveries(run_key TEXT,chat TEXT,status TEXT,body_hash TEXT,message_id INTEGER,PRIMARY KEY(run_key,chat))')
