@@ -25,10 +25,16 @@ def delta_auction(current, previous):
     comparable = [(x, old[str(x['offerId'])]) for x in current['items'] if str(x['offerId']) in old]
     if not comparable:
         return None
-    changed = sum(a.get('currentBet') != b.get('currentBet') for a, b in comparable)
+    # Absent currentBet is not zero and cannot prove that our bid did not change.
+    bids = [(a, b) for a, b in comparable
+            if all(isinstance(x.get('currentBet'), (int, float))
+                   and not isinstance(x.get('currentBet'), bool) for x in (a, b))]
+    changed = sum(a['currentBet'] != b['currentBet'] for a, b in bids)
     moved = sum((a.get('page'), a.get('position')) != (b.get('page'), b.get('position'))
                 for a, b in comparable)
-    return f'С прошлого среза: ставки изменились у {changed}, позиции — у {moved} из {len(comparable)} сопоставленных лотов.'
+    bid_text = (f'ставки изменились у {changed} из {len(bids)} лотов'
+                if bids else 'изменение наших ставок не определено')
+    return f'С прошлого среза: {bid_text}; позиции — у {moved} из {len(comparable)} сопоставленных лотов.'
 
 
 def render(report, previous=None):
@@ -89,9 +95,9 @@ def render(report, previous=None):
             lines.append(f'Ставки по {len(bids)} лотам: {amount(min(bids), True)}–{amount(max(bids), True)}; '
                          f'медиана {amount(statistics.median(bids), True)}.')
         else:
-            lines.append('⚪ Текущие ставки API не вернул.')
+            lines.append('⚪ Наши ставки по объявлениям: поле currentBet отсутствует в ответе Циан. Это не нулевая ставка.')
         if leaders:
-            lines.append(f'Ставки лидеров: {amount(min(leaders), True)}–{amount(max(leaders), True)}.')
+            lines.append(f'Ставки лидеров аукциона объявлений: {amount(min(leaders), True)}–{amount(max(leaders), True)}.')
         if positions:
             position_text = (f', места {min(first)}–{max(first)}' if first else '')
             lines.append(f'На первой странице: {len(first)} из {len(positions)} лотов с позицией{position_text}.')
@@ -106,6 +112,10 @@ def render(report, previous=None):
         lines.append('<i>Срез аукциона по лотам; это не ставка за целевой звонок. Выдача зависит от запроса.</i>')
     else:
         lines.append('⚪ ' + esc(auction.get('reason') or cian.get('reason', 'аукцион не получен')) + '.')
+
+    lines += ['', '<b>Циан · платные звонки и расход</b>',
+              '⚪ Ставка за звонок, платные звонки и расход CPL пока не получены. Нужны методы API новостроек; обычный API объявлений их не заменяет.',
+              'Конверсия в целевые пока не рассчитана: нет подтверждённого числа платных звонков за период ДБ.']
 
     lines += ['', '<b>Показы и просмотры за вчера</b>']
     stats = cian.get('statistics', {})
@@ -135,5 +145,5 @@ def render(report, previous=None):
     else:
         lines.append('Журнал создан в ДБ; автоматическое чтение ожидает подключения доступа.')
     lines.append('Ставки и тарифы автоматически не меняются.')
-    lines.append('<i>Платные звонки и списания API ещё не сверены с ДБ; конверсия в целевые не рассчитана.</i>')
+    lines.append('<i>API-расход не сверён с ДБ. Налоговую базу расходов и состав целевых звонков нужно подтвердить.</i>')
     return '\n'.join(lines)

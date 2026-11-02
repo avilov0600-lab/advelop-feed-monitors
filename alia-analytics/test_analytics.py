@@ -84,6 +84,25 @@ class ApiTests(unittest.TestCase):
         b = {'status': 'ok', 'items': [{'offerId': 2, 'currentBet': 20, 'page': 1, 'position': 2}]}
         self.assertIsNone(delta_auction(a, b))
 
+    def test_missing_bid_does_not_become_zero_or_unchanged(self):
+        old = {'status': 'ok', 'items': [
+            {'offerId': 1, 'currentBet': None, 'page': 1, 'position': 2}]}
+        new = {'status': 'ok', 'items': [
+            {'offerId': 1, 'currentBet': None, 'page': 1, 'position': 3}]}
+        text = delta_auction(new, old)
+        self.assertIn('изменение наших ставок не определено', text)
+        self.assertNotIn('ставки изменились у 0', text)
+        self.assertIn('позиции — у 1 из 1', text)
+
+    def test_bid_change_coverage_excludes_missing_values(self):
+        old = {'status': 'ok', 'items': [
+            {'offerId': 1, 'currentBet': 0, 'page': 1, 'position': 2},
+            {'offerId': 2, 'currentBet': None, 'page': 1, 'position': 2}]}
+        new = {'status': 'ok', 'items': [
+            {'offerId': 1, 'currentBet': 10, 'page': 1, 'position': 2},
+            {'offerId': 2, 'currentBet': 10, 'page': 1, 'position': 2}]}
+        self.assertIn('ставки изменились у 1 из 1', delta_auction(new, old))
+
     def test_bad_lot_does_not_discard_remaining_auction_rows(self):
         api = Mock()
         def call(path, query, **kwargs):
