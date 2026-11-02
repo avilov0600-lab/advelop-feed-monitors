@@ -25,7 +25,7 @@ class DashboardTests(unittest.TestCase):
     def fixture(self, shift=0):
         header = ['Источник', 'Разбивка', 'Место', 'Формат'] + [''] * shift + list(HEADERS.values())
         rows = [['Вчера', 46327], header, ['Базы недвижимости', '', '', ''] + [''] * shift + [75, 2, 0, 1200, 40, 0, 0],
-                ['Cian', '', 'Premium', ''] + [''] * shift + [9, 0, 0, 900, 30, 0, 0],
+                ['Cian', 'Premium', 'cian.ru', ''] + [''] * shift + [9, 0, 0, 900, 30, 0, 0],
                 ['Социальные сети', '', '', ''] + [''] * shift + [999] * 7]
         rows[0][1] = (dt.date(2026, 11, 1) - dt.date(1899, 12, 30)).days
         return rows
@@ -35,6 +35,7 @@ class DashboardTests(unittest.TestCase):
             report = parse_month(self.fixture(shift), month='Ноябрь', yesterday=dt.date(2026, 11, 1), journal_rows=[])
             self.assertEqual(report['total']['calls_plan'], 75)
             self.assertEqual([x['name'] for x in report['platforms']], ['Cian'])
+            self.assertEqual(report['platforms'][0]['tariff_plan'], 'Premium')
             self.assertFalse(report['calls_verified'])
 
     def test_stale_formula_date_rejected(self):

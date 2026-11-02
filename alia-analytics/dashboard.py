@@ -84,7 +84,8 @@ def parse_month(rows, *, month, yesterday, journal_rows):
             break
         if not norm(name).startswith(allowed):
             break
-        details.append({'name': name, 'tariff_plan': at(row, source_col + 2),
+        details.append({'name': name, 'tariff_plan': at(row, source_col + 1),
+                        'placement_plan': at(row, source_col + 3),
                         **{k: number(at(row, c)) for k, c in columns.items()}})
     if not details:
         raise ValueError('В блоке нет строк площадок')

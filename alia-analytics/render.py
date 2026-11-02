@@ -62,13 +62,21 @@ def render(report, previous=None):
         if db['calls_verified'] and db['spend_verified'] and db['plan_approved']:
             if t['calls_plan_date'] and t['calls'] is not None and t['calls'] < t['calls_plan_date']:
                 lines.append('План по целевым к дате пока не выполнен; проверить разметку и результат по площадкам.')
+        lines.append('<i>По площадкам: факт / план к дате</i>')
         for platform in db['platforms']:
             name = platform['name'] + (' · тариф' if str(platform.get('tariff_plan', '')).casefold() == 'тариф' else '')
-            lines.append(f'{esc(name)}: ЦО {amount(platform["calls"])}/{amount(platform["calls_plan_date"])}; '
+            calls = (f'ЦО {amount(platform["calls"])}/{amount(platform["calls_plan_date"])}; '
+                     if platform['calls_plan'] is not None else '')
+            lines.append(f'{esc(name)}: {calls}'
                          f'расход {amount(platform["spend"], True)}/{amount(platform["budget_plan_date"], True)} к дате.')
 
     cian = report['cian']
     lines += ['', '<b>Циан · ставки и позиции объявлений</b>']
+    for platform in db.get('platforms', []):
+        if platform['name'].casefold() in ('cian', 'циан') and platform.get('calls_plan'):
+            plan = platform.get('placement_plan')
+            if plan:
+                lines.append('<i>В плане ДБ: ' + esc(str(plan)[:180]) + '. Это не подтверждение текущих настроек кабинета.</i>')
     auction = cian.get('auction', {})
     if auction.get('status') in ('ok', 'partial'):
         items = auction.get('items', [])
