@@ -307,6 +307,21 @@ def aware_timestamp(value):
         return None
 
 
+def masters_site_result(message):
+    """Read the explicit site row, never the aggregate red/green report status.
+
+    Supports both the historical site-first layout and the emergency header.
+    """
+    for line in str(message).splitlines():
+        if line == '✅ Сайт доступен':
+            return CheckResult(200, True)
+        if line.startswith('❌ Сайт недоступен — '):
+            return CheckResult(None, False, line.partition(' — ')[2])
+        if line.startswith('⚪ Доступность сайта не проверена'):
+            return None
+    return None
+
+
 class ReportReader:
     def __init__(self, sites):
         self.sites = sites
@@ -323,13 +338,9 @@ class ReportReader:
                         db.close()
                     if not row:
                         continue
-                    first = row[0].splitlines()[0]
                     observed = aware_timestamp(row[1])
-                    if first.startswith('✅ Сайт доступен'):
-                        result = CheckResult(200,True)
-                    elif first.startswith('❌ Сайт недоступен'):
-                        result = CheckResult(None,False,first.partition(' — ')[2])
-                    else:
+                    result = masters_site_result(row[0])
+                    if result is None:
                         continue
                     if observed is not None:
                         for site in self.sites:

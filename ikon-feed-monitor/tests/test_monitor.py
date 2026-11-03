@@ -167,11 +167,11 @@ class TelegramTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, mock.patch.object(monitor, "_master_for", side_effect=master), mock.patch.dict(monitor.FEED_PARSERS, {key: parser for key in monitor.FEED_PARSERS}), mock.patch.object(monitor, "_load_api_snapshot", side_effect=snapshot), mock.patch.object(monitor, "analyze_cards", return_value={}):
             return monitor.analyze_directory(Path(directory))
 
-    def test_green_report_contains_only_residential_category(self):
+    def test_report_without_website_observation_keeps_residential_category(self):
         report = self._report()
         self.assertEqual(report["overall_status"], "ok")
         message = monitor.format_telegram(report)
-        self.assertIn("<b>🟢 IKON DEVELOPMENT</b>", message)
+        self.assertIn("<b>🔴 IKON DEVELOPMENT — проверка не завершена</b>", message)
         self.assertIn("<b>ЖК «Новый Зеленоград»</b>", message)
         self.assertNotIn("КОММЕРЦИЯ", message)
 

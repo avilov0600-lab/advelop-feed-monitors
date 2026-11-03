@@ -106,6 +106,14 @@ class SiteWatchTests(unittest.TestCase):
         self.assertEqual(len(self.store.pending(1800)),2)
         self.assertIn('Три проверки подряд',self.store.pending(1800)[0]['body'])
 
+    def test_aggregate_header_does_not_change_website_alarm(self):
+        down = watch.masters_site_result('🔴 МАСТЕРС — требует внимания\nПричина\n\n❌ Сайт недоступен — таймаут\n')
+        self.assertFalse(down.available)
+        up = watch.masters_site_result('🔴 МАСТЕРС — требует внимания\nЦиан: опубликовано 90 из 100\n\n✅ Сайт доступен\n')
+        self.assertTrue(up.available)
+        self.assertIsNone(watch.masters_site_result('🔴 МАСТЕРС — проверка не завершена\n⚪ Доступность сайта не проверена'))
+        self.assertIsNone(watch.masters_site_result('🟢 МАСТЕРС — экстренных ошибок нет'))
+
     def test_early_extra_observation_does_not_accelerate_confirmation(self):
         self.store.record(self.site['id'],DOWN,0)
         with self.assertRaises(ValueError): self.store.record(self.site['id'],DOWN,899)

@@ -188,21 +188,21 @@ class ReportAvailabilityTests(unittest.TestCase):
             _feed_counts_line=lambda f: 'нет данных', _marketing_lines=lambda p: [],
             _checked_label=lambda t: t)
         install(m, 'Клиент')
-        project = {'master': {'status': 'OK', 'lot_count': 12}, 'feeds': {},
+        project = {'master': {'status': 'OK', 'lot_count': 12}, 'feeds': {'cian': {'status':'OK', 'lot_count':12}},
                    'master_vs_feeds': {}, 'cross_feed': {},
                    'website': {'status': 'SOURCE_UNAVAILABLE', 'lot_count': None, 'reason': 'каталог не прочитан'}}
         report = {'overall_status': 'ok', 'checked_at': '2026-10-28',
                   'site_availability': {'p': {'status': 'available', 'status_code': 200}},
-                  'categories': {'r': {'projects': {'p': project}, 'api_checks': {}, 'platform_cards': {}}}}
+                  'categories': {'r': {'projects': {'p': project}, 'api_checks': {'cian': {'status':'ok', 'active_projects':['p'], 'actual_platform_count':12}}, 'platform_cards': {}}}}
         text = m.format_telegram(report)
-        self.assertIn('<b>🟢 Клиент</b>', text)
-        self.assertTrue(text.startswith('✅ Сайт доступен'))
+        self.assertIn('<b>🟢 Клиент — экстренных ошибок нет</b>', text)
+        self.assertIn('\n✅ Сайт доступен\n', text)
         self.assertIn('Количество квартир на сайте не определено', text)
         self.assertNotIn('Сайт недоступен', text)
         report['site_availability']['p'] = {'status': 'unavailable', 'reason': 'Ошибка DNS'}
         text = m.format_telegram(report)
-        self.assertIn('<b>🟢 Клиент</b>', text)
-        self.assertTrue(text.startswith('❌ Сайт недоступен — не найден адрес сайта'))
+        self.assertTrue(text.startswith('<b>🔴 Клиент — требует внимания</b>'))
+        self.assertIn('❌ Сайт недоступен — не найден адрес сайта', text)
 
     def test_masters_standalone_copies_match_shared_modules(self):
         root = Path(__file__).resolve().parents[1]

@@ -149,6 +149,33 @@ can preview or synchronize the latest saved report without downloading sources,
 changing report JSON, or broadcasting to every subscriber. Its owner-preview
 option sends one example to the configured owner only.
 
+## Emergency report header — 3 November 2026
+
+The first line now has a binary operational status. Confirmed website failure,
+unavailable maternal/agency feeds, or measured publication below **95%** of the
+maternal inventory make it red. Exactly 95% is accepted. Reserved/excluded lots
+are already absent from the maternal `lot_count`; the website and agency XML
+counts never replace this denominator. Shared API cabinets are compared with the
+sum of the maternal counts for the same explicitly named projects, not presented
+as separate per-project publication counts.
+
+Green requires all applicable checks to be confirmed. Unavailable APIs/cards or
+missing baseline counts produce red **«проверка не завершена»**, without inventing
+zero publication or a confirmed outage. Proxy XML counts do not prove publication.
+Field mismatches, obsolete promotions and other diagnostics stay visible below
+but do not independently change this operational header. Website-free projects
+are exempt from the website check; a valid zero baseline has no shortage ratio.
+
+The website incident reader accepts both the old site-first format and the new
+header. It uses only the explicit website status row, never the aggregate color,
+so feed/publication problems do not start 15/30-minute website alarms.
+
+`scripts/deploy_emergency_header.py` previews all twelve VPS tenants against their
+saved reports, checks installed hashes, then replaces only the two formatter copies
+and the incident reader. Apply the reader before updating standalone MASTERS main.
+Saved `/start` messages can be synchronized with `scripts/reformat_saved_reports.py
+TENANT --sync`; this does not broadcast or change observation timestamps.
+
 ## Credentials and runtime state
 
 No real tokens, private keys, subscriber identifiers, databases, production

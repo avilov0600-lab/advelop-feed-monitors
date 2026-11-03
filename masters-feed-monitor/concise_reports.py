@@ -98,6 +98,104 @@ def _source_names(sources, labels):
     return ', '.join(dict.fromkeys(labels.get(source, source) for source in sources))
 
 
+def emergency_status(report, projects, labels, data=None):
+    """Three operational checks, independent of field/marketing diagnostics.
+
+    Only measured publication counts are used, against the maternal inventory
+    for the same project/account scope. Unknown results cannot prove green.
+    A valid empty maternal inventory has no publication coverage requirement.
+    """
+    problems, unknown = [], []
+    observations = report.get('site_availability', {})
+
+    def count(value):
+        return value if type(value) is int and value >= 0 else None
+
+    def baseline(project):
+        master = project.get('master', {})
+        return count(master.get('lot_count')) if master.get('status') not in UNAVAILABLE else None
+
+    def coverage(label, actual, expected):
+        if expected is None or actual is None:
+            unknown.append(label + ': доля публикации не подтверждена')
+        elif expected and actual * 100 < expected * 95:
+            # Floor display avoids showing 95.0% for a value below the threshold.
+            percent = (actual * 1000 // expected) / 10
+            problems.append(f'{label}: опубликовано {actual} из {expected} ({percent:g}%) — менее 95%')
+
+    for key, observation in observations.items():
+        name = projects.get(key, key)
+        if observation.get('status') == 'unavailable':
+            problems.append(name + ': сайт недоступен — ' +
+                            brief_reason(observation.get('reason'), observation.get('status_code')))
+        elif observation.get('status') != 'available':
+            unknown.append(name + ': доступность сайта не подтверждена')
+
+    for category in report.get('categories', {}).values():
+        values = category.get('projects', {})
+        checked_platforms = set()
+        for key, project in values.items():
+            name = projects.get(key, key)
+            if key not in observations and project.get('website', {}).get('status') != 'not_applicable':
+                unknown.append(name + ': доступность сайта не подтверждена')
+            master = project.get('master', {})
+            if master.get('status') in UNAVAILABLE:
+                problems.append(name + ': источник клиента недоступен')
+            elif baseline(project) is None:
+                unknown.append(name + ': количество лотов в источнике не подтверждено')
+            failed = [source for source, feed in project.get('feeds', {}).items()
+                      if feed.get('status') in UNAVAILABLE or count(feed.get('lot_count')) is None]
+            if failed:
+                problems.append(name + ': фиды недоступны — ' + _source_names(failed, labels))
+            if not project.get('feeds'):
+                unknown.append(name + ': фиды не проверены')
+
+        for account, api in category.get('api_checks', {}).items():
+            source = account.split('_', 1)[0]
+            if source not in {'cian', 'avito'}:
+                continue
+            spec = (data or {}).get('accounts', {}).get(account, {})
+            scope = list(dict.fromkeys(api.get('active_projects') or spec.get('projects') or []))
+            if not scope:
+                unknown.append(labels.get(account, source) + ': состав проектов кабинета не подтверждён')
+                continue
+            checked_platforms.update((key, source) for key in scope)
+            expected = [baseline(values[key]) if key in values else None for key in scope]
+            total = sum(expected) if all(n is not None for n in expected) else None
+            actual = count(api.get('actual_platform_count'))
+            if api.get('status') not in {None, 'ok', 'OK'}:
+                actual = None
+            scope_label = ', '.join(projects.get(key, key) for key in scope)
+            if len(scope) > 1:
+                scope_label = 'суммарно: ' + scope_label
+            coverage(labels.get(account, labels.get(source, source)) + ' (' + scope_label + ')', actual, total)
+
+        for key, cards in category.get('platform_cards', {}).items():
+            for source, card in cards.items():
+                if source in {'cian', 'avito'}:
+                    continue  # Publication on these platforms is checked only by API.
+                source_key = 'yandex' if source == 'yandex_realty' else source
+                checked_platforms.add((key, source_key))
+                actual = count(card.get('offer_count'))
+                if (card.get('check_method') in {'feed_proxy', 'feed_assumption', 'category_api'}
+                        or card.get('status') not in {'ok', 'error', 'OK'}):
+                    actual = None
+                coverage(projects.get(key, key) + ' · ' + labels.get(source, source),
+                         actual, baseline(values.get(key, {})))
+
+        for key, project in values.items():
+            expected_sources = set(project.get('feeds', {})) & {'cian', 'avito', 'yandex', 'domclick', 'm2'}
+            expected_sources.update((data or {}).get('projects', {}).get(key, {}).get('missing_card_sources', []))
+            missing = sorted(source for source in expected_sources if (key, source) not in checked_platforms)
+            if missing:
+                unknown.append(projects.get(key, key) + ': размещение не проверено — ' + _source_names(missing, labels))
+    if not report.get('categories'):
+        unknown.append('Данные проверки отсутствуют')
+    problems = list(dict.fromkeys(problems))
+    unknown = list(dict.fromkeys(unknown))
+    return {'status': 'error' if problems or unknown else 'ok', 'problems': problems, 'unknown': unknown}
+
+
 def inventory_lines(project, labels):
     master = project.get('master', {})
     site = project.get('website', {})
@@ -336,9 +434,15 @@ def render_report(report, client_name, projects, labels, *, field_labels=None, d
     labels = {'yandex_realty': 'Яндекс Недвижимость', **labels}
     escape = (lambda text: html.escape(str(text), quote=False)) if html_mode else str
     bold = (lambda text: '<b>' + escape(text) + '</b>') if html_mode else str
-    lines = [escape(line) for line in website_header(report, projects)]
-    mark = '🟢' if report.get('overall_status') == 'ok' else '🔴'
-    lines += ['', bold(mark + ' ' + client_name)]
+    emergency = emergency_status(report, projects, labels, data)
+    mark = '🟢' if emergency['status'] == 'ok' else '🔴'
+    title = ('экстренных ошибок нет' if emergency['status'] == 'ok' else
+             'требует внимания' if emergency['problems'] else 'проверка не завершена')
+    lines = [bold(mark + ' ' + client_name + ' — ' + title)]
+    lines.extend(escape(line) for line in emergency['problems'])
+    if emergency['unknown']:
+        lines.append(escape('Не подтверждено: ' + '; '.join(emergency['unknown']) + '.'))
+    lines += [''] + [escape(line) for line in website_header(report, projects)]
     notes_seen = set()
     for category in report.get('categories', {}).values():
         for project_key, project in category.get('projects', {}).items():
@@ -393,6 +497,7 @@ def render_masters(report, m):
     for source, value in report.get('platform_cards', {}).items():
         if source in {'cian', 'avito'}:
             accounts[source] = {'active_projects': ['masters'], 'comparison_status': value.get('status'),
+                                'status': 'ok' if value.get('offer_count') is not None and value.get('check_method') not in {'feed_proxy', 'feed_assumption'} and value.get('status') in {'ok', 'error'} else 'unavailable',
                                 'actual_platform_count': value.get('offer_count'),
                                 'expected_feed_count': value.get('feed_count'),
                                 'reason': value.get('reason'), 'import_error_count': value.get('import_error_count', 0)}

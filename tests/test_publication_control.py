@@ -37,7 +37,7 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(message.count('Этажность здания:'),1)
         self.assertIn('в источнике 85, в фиде 87',message)
         self.assertNotIn('ошибок полей 281',message)
-        self.assertIn('<b>🔴 test</b>',message)
+        self.assertIn('<b>🔴 test — проверка не завершена</b>',message)
         comparison['field_mismatch_counts']['floor']=2
         message=m.format_telegram(report)
         self.assertIn('Этаж квартиры: с источником — 2',message)
