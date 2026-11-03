@@ -176,6 +176,18 @@ and the incident reader. Apply the reader before updating standalone MASTERS mai
 Saved `/start` messages can be synchronized with `scripts/reformat_saved_reports.py
 TENANT --sync`; this does not broadcast or change observation timestamps.
 
+Deployment verified on **3 November 2026 at 12:44 MSK**: all 13 cached headers
+updated, all 13 intake services active, and the website incident reader active.
+The standalone MASTERS `main` is `958fd0a7ebbb450c6c652ad84fd2a4b1337fa921`.
+See [the deployment verification](verification/emergency-header-live-verification-20261103.json).
+This rollout reformatted existing observations without triggering a new scan or
+broadcast; the normal schedule and website confirmation rounds are unchanged.
+
+Client dashboards are **read-only**. Never edit their data, formulas, formatting,
+structure, permissions, or tabs; never add action-log tabs. Keep new operational
+logs and calculations outside dashboards. This supersedes earlier ALIA log-tab
+plans; do not modify existing tabs to enforce this boundary.
+
 ## Credentials and runtime state
 
 No real tokens, private keys, subscriber identifiers, databases, production

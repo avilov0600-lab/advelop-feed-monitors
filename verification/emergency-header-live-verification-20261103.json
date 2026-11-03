@@ -1,0 +1,40 @@
+{
+  "verified_at_utc": "2026-11-03T09:44:05.901157+00:00",
+  "method": "Authenticated Timeweb console; installed source SHA-256; read-only inspection of each cached report header and intake service; incident-reader service state",
+  "deployed_revision": "c9494b63f1d501f2a41883dfb002b1f86650ad8d",
+  "sources": {
+    "/opt/concise_reports.py": "ac04c993f14356844ebee6e4e98ab05dab7da0cc064ecd143a1381c9766938ff",
+    "/opt/advelop-client-onboarding/concise_reports.py": "ac04c993f14356844ebee6e4e98ab05dab7da0cc064ecd143a1381c9766938ff",
+    "/opt/advelop-site-watch/watch.py": "455561f2aa6e8a24f97ce27e58ae04f9bc37dddf2e5dd64e76d0250d97688ae1"
+  },
+  "clients_verified": [
+    "masters", "dar", "ikon", "asterus", "rodina", "plato", "aston",
+    "summa", "donstroy", "kortros", "afi", "apsis", "sovcombank"
+  ],
+  "cached_headers_updated": 13,
+  "intake_services_active": 13,
+  "site_watch_active": true,
+  "masters": {
+    "repository": "avilov0600-lab/masters-feed-monitor",
+    "main_revision": "958fd0a7ebbb450c6c652ad84fd2a4b1337fa921",
+    "cached_report_synchronized": true,
+    "original_observation_time_preserved": true
+  },
+  "tests": {
+    "monorepo_passed": 308,
+    "standalone_masters_passed": 91,
+    "note": "The standalone suite overlaps the MASTERS component of the monorepo; do not add these counts as unique tests."
+  },
+  "schedule_changed": false,
+  "schedule_moscow": ["09:00", "13:00", "15:30", "18:30"],
+  "website_incident_confirmation_minutes": [0, 15, 30],
+  "source_report_timestamps_changed": false,
+  "additional_feed_or_api_scan_triggered": false,
+  "broadcast_sent": false,
+  "dashboard_changes": false,
+  "runtime_state_or_secrets_included": false,
+  "limitations": [
+    "This verifies formatter deployment and saved-report replay, not a new live observation of every source.",
+    "Active intake services and updated saved messages were checked; no test message was sent to subscribers during this deployment."
+  ]
+}
