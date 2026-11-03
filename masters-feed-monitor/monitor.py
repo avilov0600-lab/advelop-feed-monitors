@@ -1730,6 +1730,43 @@ def _read_json_object(path: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+class TelegramDeliveryError(RuntimeError):
+    """Sanitized API failure; a missing response does not prove non-delivery."""
+
+    def __init__(self, code=None, reason="invalid_response", *, rejected=False, retry_after=None):
+        self.code = code
+        self.reason = reason
+        self.rejected = rejected
+        self.retry_after = retry_after
+        super().__init__(f"Telegram delivery: {reason}")
+
+
+def _telegram_delivery_error(payload: Any, http_code=None) -> TelegramDeliveryError:
+    if not isinstance(payload, dict):
+        return TelegramDeliveryError(http_code)
+    code = payload.get("error_code")
+    rejected = payload.get("ok") is False and type(code) is int and 400 <= code <= 599
+    description = str(payload.get("description", "")).lower()
+    reason = "telegram_rejected" if rejected else "invalid_response"
+    for phrase, label in (
+        ("bot was blocked by the user", "bot_blocked"),
+        ("user is deactivated", "account_deactivated"),
+        ("chat not found", "chat_not_found"),
+        ("too many requests", "rate_limited"),
+        ("can't parse entities", "invalid_formatting"),
+        ("message is too long", "message_too_long"),
+    ):
+        if rejected and phrase in description:
+            reason = label
+            break
+    parameters = payload.get("parameters")
+    delay = parameters.get("retry_after") if isinstance(parameters, dict) else None
+    return TelegramDeliveryError(
+        code if type(code) is int else http_code, reason, rejected=rejected,
+        retry_after=delay if type(delay) is int and delay >= 0 else None,
+    )
+
+
 def send_telegram(message: str, *, chat_id: str | None = None) -> dict[str, Any]:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     target_chat_id = chat_id or os.environ.get("TELEGRAM_CHAT_ID")
@@ -1776,12 +1813,25 @@ def send_telegram(message: str, *, chat_id: str | None = None) -> dict[str, Any]
             data=payload,
             method="POST",
         )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        result = json.loads(response.read().decode("utf-8"))
-    if not isinstance(result, dict) or not result.get("ok"):
-        raise RuntimeError("Telegram sendMessage returned an invalid response")
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            result = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        try:
+            payload = json.loads(error.read(65536))
+        except (OSError, ValueError):
+            payload = None
+        finally:
+            error.close()
+        raise _telegram_delivery_error(payload, error.code) from None
+    if not isinstance(result, dict) or result.get("ok") is not True:
+        raise _telegram_delivery_error(result)
     telegram_result = result.get("result")
-    return telegram_result if isinstance(telegram_result, dict) else {}
+    if (not isinstance(telegram_result, dict)
+            or type(telegram_result.get("message_id")) is not int
+            or telegram_result["message_id"] <= 0):
+        raise TelegramDeliveryError(reason="missing_message_receipt")
+    return telegram_result
 
 
 def save_latest_telegram_message(
@@ -1862,18 +1912,54 @@ def broadcast_telegram_message(message: str, checked_at: str | None = None) -> d
     if not recipients:
         raise RuntimeError("No active Telegram subscribers")
     failed = 0
+    rejected = 0
+    unconfirmed = 0
     for position, chat_id in enumerate(recipients):
-        try:
-            send_telegram(message, chat_id=chat_id)
-        except (OSError, RuntimeError, ValueError):
+        receipt = {
+            "event": "telegram_delivery",
+            # Resolve this reference against the protected subscriber registry.
+            # Never write recipient IDs, names, tokens or response bodies to logs.
+            "recipient_ref": hashlib.sha256(chat_id.encode()).hexdigest()[:16],
+            "report_checked_at": checked_at,
+            "message_sha256": hashlib.sha256(message.encode()).hexdigest(),
+        }
+        for attempt in range(1, 4):
+            receipt["attempts"] = attempt
+            print(json.dumps({**receipt, "event": "telegram_delivery_attempt"},
+                             ensure_ascii=False), flush=True)
+            try:
+                sent = send_telegram(message, chat_id=chat_id)
+            except TelegramDeliveryError as error:
+                # Only a confirmed 429 rejection can be retried automatically.
+                # A timeout may happen after Telegram accepted the message.
+                if (error.rejected and error.code == 429 and attempt < 3
+                        and error.retry_after is not None and error.retry_after <= 5):
+                    time.sleep(max(1, error.retry_after))
+                    continue
+                receipt.update(status="rejected" if error.rejected else "unconfirmed",
+                               code=error.code, reason=error.reason)
+                if error.retry_after is not None:
+                    receipt["retry_after"] = error.retry_after
+            except (OSError, RuntimeError, ValueError, http.client.HTTPException) as error:
+                receipt.update(status="unconfirmed", reason=type(error).__name__)
+            else:
+                message_id = sent.get("message_id")
+                receipt.update(status="accepted", message_id=message_id if type(message_id) is int else None)
+            break
+        print(json.dumps(receipt, ensure_ascii=False), flush=True)
+        if receipt["status"] != "accepted":
             failed += 1
+            rejected += receipt["status"] == "rejected"
+            unconfirmed += receipt["status"] == "unconfirmed"
         if position + 1 < len(recipients):
             # Telegram documents a free broadcast ceiling of about 30 messages/s.
             time.sleep(0.05)
     delivered = len(recipients) - failed
-    print(f"Telegram broadcast: subscribers={len(recipients)} delivered={delivered} failed={failed}")
+    print(f"Telegram broadcast: subscribers={len(recipients)} delivered={delivered} failed={failed} "
+          f"rejected={rejected} unconfirmed={unconfirmed}")
     if failed:
-        raise RuntimeError(f"Telegram broadcast failed for {failed} subscriber(s)")
+        raise RuntimeError(f"Telegram delivery not confirmed for {failed} subscriber(s): "
+                           f"rejected={rejected}, unconfirmed={unconfirmed}; inspect recipient receipts")
     return {"subscribers": len(recipients), "delivered": delivered, "failed": failed}
 
 

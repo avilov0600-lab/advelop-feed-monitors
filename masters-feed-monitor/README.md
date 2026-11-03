@@ -43,6 +43,23 @@ python3 monitor.py --offline --cache-dir /private/tmp --output reports/latest.js
 
 ## Telegram
 
+Delivery diagnostics (3 November 2026): each recipient has structured
+`telegram_delivery_attempt` and `telegram_delivery` log records. `accepted` means
+Telegram returned a message receipt; `rejected` means an explicit API rejection;
+`unconfirmed` means the response was missing or invalid and the message may have
+arrived. Do not resend an unconfirmed delivery without checking with the recipient.
+The logs contain a SHA-256 recipient reference (first 16 hex characters), report
+time, message hash, attempt count, and a safe error category. They never contain
+the recipient's ID/name, token, raw API error body, or request URL. Resolve a
+reference against the protected subscriber registry when an individual retry is
+needed. Successful recipients must not be included in a retry.
+
+Only explicit rate-limit rejections (`429` with `retry_after` at most 5 seconds)
+are retried automatically, up to three attempts for that recipient. Network
+timeouts, ambiguous gateway failures, and permanent rejections are not retried.
+This avoids duplicate reports after Telegram accepted a message but its response
+was lost. No additional broadcast is triggered by deploying this change.
+
 Создайте бота через BotFather, добавьте его в нужный чат и передайте секреты
 через переменные окружения:
 
