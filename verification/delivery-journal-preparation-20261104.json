@@ -1,0 +1,32 @@
+{
+  "prepared_on_moscow": "2026-11-04",
+  "base_revision": "71de2cb",
+  "branch": "codex/all-bot-delivery-ledger",
+  "production_deployed": false,
+  "production_verified": false,
+  "activation_blockers": [
+    "Codex browser tool reports Local browser use is disabled in Work settings",
+    "Existing SSH connection did not reach an authenticated server session"
+  ],
+  "offline_tests_passed": 347,
+  "suites": {
+    "shared": 115,
+    "dar": 21,
+    "developer_clients": 28,
+    "ikon": 61,
+    "masters": 99,
+    "telegram_intake": 23
+  },
+  "covered_feed_report_tenants": [
+    "masters", "dar", "ikon", "asterus", "rodina", "plato", "aston", "summa",
+    "donstroy", "kortros", "afi", "apsis", "sovcombank"
+  ],
+  "separate_existing_outboxes_unchanged": [
+    "subscriber command replies", "website incident alerts", "ALIA 11:30 analytics"
+  ],
+  "dashboard_reads": false,
+  "dashboard_changes": false,
+  "telegram_messages_sent": false,
+  "schedule_changed": false,
+  "runtime_credentials_or_subscriber_data_included": false
+}

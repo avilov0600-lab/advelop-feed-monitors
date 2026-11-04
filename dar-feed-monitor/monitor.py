@@ -1753,5 +1753,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from publication_control import install as _install_publication_control
 _install_publication_control(sys.modules[__name__], "DAR")
 
+from telegram_delivery import install_monitor as _install_delivery_journal
+_install_delivery_journal(sys.modules[__name__], 'dar')
+
 if __name__ == "__main__":
     sys.exit(main())

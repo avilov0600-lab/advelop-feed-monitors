@@ -534,5 +534,9 @@ def main() -> None:
     server.serve_forever()
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from telegram_delivery import install_relay as _install_delivery_journal
+_install_delivery_journal(RelayApplication)
+
 if __name__ == "__main__":
     main()

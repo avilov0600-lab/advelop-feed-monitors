@@ -180,6 +180,26 @@ class IntakeTests(unittest.TestCase):
 
 
 class TransportTests(unittest.TestCase):
+    def test_scheduled_send_never_fails_over_after_request_was_sent(self):
+        connection = MagicMock()
+        connection.getresponse.side_effect = TimeoutError()
+        with patch('transport.TelegramConnection', return_value=connection) as factory:
+            with self.assertRaises(urllib.error.URLError):
+                urlopen(urllib.request.Request('https://api.telegram.org/botSECRET/sendMessage', data=b'x=y'), timeout=8)
+        factory.assert_called_once()
+        connection.request.assert_called_once()
+
+    def test_scheduled_send_can_fail_over_before_request(self):
+        bad, good = MagicMock(), MagicMock()
+        bad.connect.side_effect = TimeoutError()
+        good.getresponse.return_value.status = 200
+        good.getresponse.return_value.read.return_value = b'{"ok":true}'
+        with patch('transport.TelegramConnection', side_effect=[bad, good]):
+            with urlopen(urllib.request.Request('https://api.telegram.org/botSECRET/sendMessage', data=b'x=y'), timeout=8) as response:
+                self.assertTrue(json.load(response)['ok'])
+        bad.request.assert_not_called()
+        good.request.assert_called_once()
+
     def test_scheduled_sender_adapter_uses_ipv4_and_preserves_response(self):
         connection = MagicMock()
         connection.getresponse.return_value.status = 200

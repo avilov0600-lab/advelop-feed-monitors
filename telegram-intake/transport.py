@@ -87,6 +87,12 @@ def urlopen(request, *, timeout):
     for family in (socket.AF_INET, socket.AF_INET6):
         connection = TelegramConnection(family, timeout=timeout)
         try:
+            # Failover is safe only before any HTTP request could be transmitted.
+            connection.connect()
+        except (OSError, http.client.HTTPException):
+            connection.close()
+            continue
+        try:
             headers = dict(request.header_items())
             if request.data is not None and not any(key.lower() == 'content-type' for key in headers):
                 headers['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -103,7 +109,7 @@ def urlopen(request, *, timeout):
         except urllib.error.HTTPError:
             raise
         except (OSError, http.client.HTTPException):
-            continue
+            raise urllib.error.URLError('Telegram delivery response unavailable; outcome unconfirmed') from None
         finally:
             connection.close()
     raise urllib.error.URLError('Telegram network unavailable') from None

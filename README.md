@@ -2,6 +2,11 @@
 
 Source-code repository for real-estate feed monitoring bots.
 
+The `codex/all-bot-delivery-ledger` branch prepares private per-recipient report
+receipts and targeted retries for all 13 bots. It is opt-in and **not yet verified
+as deployed**. Operational instructions, privacy and rollout limits are in
+[`DELIVERY.md`](DELIVERY.md). Dashboards are strictly read-only.
+
 The `codex/onboard-five-developers` branch adds eleven projects for Donstroy,
 Kortros, AFI, APSIS GLOBE and Sovcombank. These five clients were deployed on
 28 October 2026 into their own application tree and are outside the older

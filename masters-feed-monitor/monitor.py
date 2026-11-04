@@ -2176,5 +2176,8 @@ def main(argv: list[str] | None = None) -> int:
 from publication_adapter import install as _install_publication_control
 _install_publication_control(sys.modules[__name__])
 
+from telegram_delivery import install_monitor as _install_delivery_journal
+_install_delivery_journal(sys.modules[__name__], 'masters')
+
 if __name__ == "__main__":
     sys.exit(main())
